@@ -1,13 +1,13 @@
 package RioCuartoViaja;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+import java.util.List;
+import RioCuartoViaja.*;
+import org.javalite.activejdbc.*;
+
+public class App {
+    public static void main( String[] args ){
+      
+        Login log = new Login();
+        log.setVisible(true);
     }
 }
