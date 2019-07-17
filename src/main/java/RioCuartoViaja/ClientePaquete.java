@@ -5,8 +5,8 @@ public class ClientePaquete extends Model {
 
     public ClientePaquete() {}
 
-    public ClientePaquete(int id,int dni, int id_paquete,int id_atraccion) {
-        set("id",id,"dni",dni,"id_paquete",id_paquete,"id_atraccion",id_atraccion);
+    public ClientePaquete(int id,int dni, int id_paquete) {
+        set("id",id,"dni",dni,"id_paquete",id_paquete);
     }
 
     public String getId(){
@@ -33,15 +33,7 @@ public class ClientePaquete extends Model {
         set("id_paquete",id_paquete);
     }
 
-    public String getIdAtraccion(){
-        return getString("id_atraccion");
-    }
-
-    public void setIdAtraccion(int id_atraccion){
-        set("id_atraccion",id_atraccion);
-    }
-
-    public void setClientePaquete(int id,int dni, int id_paquete,int id_atraccion) {
-        set("id",id,"dni",dni,"id_paquete",id_paquete,"id_atraccion",id_atraccion);
+    public void setClientePaquete(int id,int dni, int id_paquete) {
+        set("id",id,"dni",dni,"id_paquete",id_paquete);
     }
 }

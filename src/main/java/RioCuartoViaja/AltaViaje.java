@@ -40,9 +40,9 @@ public class AltaViaje extends javax.swing.JFrame {
         Base.open();
         cargarDatosPersonales();
         cargarFichaMedica();
-  //      cargarPaquete();
-  //      cargarTablaClientePaquete();
-  //      cargarFormaPago();
+        cargarClientePaquete();
+        cargarAtraccionPaquete();
+        cargarFormaPago();
         Base.close();
     }
     public void altaClienteConDatos(){
@@ -65,21 +65,58 @@ public class AltaViaje extends javax.swing.JFrame {
         String nombre_medicamento = new String (jTextField8.getText());
         String frecuencia = new String (jTextField9.getText());
         String medicamento_alergico = new String (jTextField10.getText());
+
         FichaMedica nuevaFicha = new FichaMedica(dni, nombre_enfermedad, es_cronica, nombre_medicamento, frecuencia, medicamento_alergico);
         nuevaFicha.saveIt();
     }
-/*
-    public void cargarTablaClientePaquete(){
 
-        int dni = Integer.parseInt(jTextField1.getText());
-        
+    public void cargarClientePaquete(){
+
+        int dni = Integer.parseInt(jTextField1.getText());  
         String destino = jComboBox1.getSelectedItem().toString();
         PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
         int id_paquete = dest.getId();
         
-        String id_atraccion = new String (jTextField3.getText());
-        ClientePaquete nuevoClientePaquete = new ClientePaquete(null, dni, id_paquete, id_atraccion);
+        ClientePaquete nuevoClientePaquete = new ClientePaquete(null, dni, id_paquete);
         nuevoClientePaquete.saveIt();
+    }
+
+    public void cargarAtraccionPaquete(){
+
+        String dni = jTextField1.getText(); 
+        String destino = jComboBox1.getSelectedItem().toString();
+        PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
+        int id_paquete = dest.getId();
+        int id_cliente_paquete;
+        List<ClientePaquete> clientePaq = ClientePaquete.findAll();
+		if(!clientePaq.isEmpty()){
+            for(ClientePaquete i : clientePaq){
+                if (i.getDni().equals(dni) && i.getIdPaquete().equals(id_paquete)){
+                    id_cliente_paquete =  i.getId();
+                }
+			}
+        }
+        int id_atraccion1,id_atraccion2,id_atraccion3;
+        String nom_atrac1 = jComboBox2.getSelectedItem().toString();
+        String nom_atrac2 = jComboBox3.getSelectedItem().toString();
+        String nom_atrac3 = jComboBox4.getSelectedItem().toString();
+        List<AtraccionTuristica> atraCli1 = AtraccionTuristica.findAll();
+		if(!atraCli1.isEmpty()){
+            for(AtraccionTuristica i : atraCli1){
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac1))
+                    id_atraccion1 =  i.getId();
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac2))
+                    id_atraccion2 =  i.getId();
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac3))
+                    id_atraccion3 =  i.getId();
+			}
+        }
+        AtraccionCliente nuevaAtraccionCliente1 = new AtraccionCliente (id_cliente_paquete,id_atraccion1);
+        nuevaAtraccionCliente1.saveIt();
+        AtraccionCliente nuevaAtraccionCliente2 = new AtraccionCliente (id_cliente_paquete,id_atraccion2);
+        nuevaAtraccionCliente2.saveIt();
+        AtraccionCliente nuevaAtraccionCliente3 = new AtraccionCliente (id_cliente_paquete,id_atraccion3);
+        nuevaAtraccionCliente3.saveIt();
     }
 
     public void cargarFormaPago(){
@@ -99,9 +136,10 @@ public class AltaViaje extends javax.swing.JFrame {
     public void cargarCuotas(){
         
     }
-*/
+
     public void agregarItemComboBoxDestino(){
         Base.open();
+        jComboBox1.addItem("");
         List<PaqueteTuristico> paquete = PaqueteTuristico.findAll();
 		if(!paquete.isEmpty()){
             for(PaqueteTuristico i : paquete){
@@ -128,9 +166,6 @@ public class AltaViaje extends javax.swing.JFrame {
         jComboBox2.removeAllItems();
         jComboBox3.removeAllItems();
         jComboBox4.removeAllItems();
-        jComboBox2.addItem("");
-        jComboBox3.addItem("");
-        jComboBox4.addItem("");
         List<AtraccionTuristica> atraccion = AtraccionTuristica.findAll();
         if(!atraccion.isEmpty()){
             for(AtraccionTuristica i : atraccion){
