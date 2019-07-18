@@ -13,7 +13,7 @@ public class AtraccionCliente extends Model {
         return getString("id_cliente_paquete");
     }
 
-    public void setIdClientePaquete(int id_paquete){
+    public void setIdClientePaquete(int id_cliente_paquete){
         set("id_cliente_paquete", id_cliente_paquete);
     }
 

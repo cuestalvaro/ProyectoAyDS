@@ -5,16 +5,16 @@ public class PlanCuota extends Model {
 
     public PlanCuota() {}
 
-    public PlanCuota(int id_pago,int nro_plan,int cant_cuotas,String fecha_inc,String fecha_fin ){
-        set("id_pago",id_pago,"nro_plan",nro_plan,"cant_cuotas",cant_cuotas,"fecha_inc",fecha_inc,"fecha_fin",fecha_fin);
+    public PlanCuota(int id_paquete,int cant_cuotas,String fecha_inc,String fecha_fin ){
+        set("id_paquete",id_paquete,"nro_plan",null,"cant_cuotas",cant_cuotas,"fecha_inc",fecha_inc,"fecha_fin",fecha_fin);
     }
 
-    public String getIdPago(){
-        return getString("id_pago");
+    public String getIdPaquete(){
+        return getString("id_paquete");
     }
 
-    public void getIdPago(int id_pago){
-        set("id_pago",id_pago);
+    public void setIdPaquete(int id_paquete){
+        set("id_paquete",id_paquete);
     }
 
     public String getNroPlan(){
@@ -49,7 +49,7 @@ public class PlanCuota extends Model {
         set("fecha_fin",fecha_fin);
     }
 
-    public void setPlanCuota(int id_pago,int nro_plan,int cant_cuotas,String fecha_inc,String fecha_fin ){
-        set("id_pago",id_pago,"nro_plan",nro_plan,"cant_cuotas",cant_cuotas,"fecha_inc",fecha_inc,"fecha_fin",fecha_fin);
+    public void setPlanCuota(int id_paquete,int cant_cuotas,String fecha_inc,String fecha_fin ){
+        set("id_paquete",id_paquete,"cant_cuotas",cant_cuotas,"fecha_inc",fecha_inc,"fecha_fin",fecha_fin);
     }
 }

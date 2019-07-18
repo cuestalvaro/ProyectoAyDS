@@ -5,8 +5,8 @@ public class ClientePaquete extends Model {
 
     public ClientePaquete() {}
 
-    public ClientePaquete(int id,int dni, int id_paquete) {
-        set("id",id,"dni",dni,"id_paquete",id_paquete);
+    public ClientePaquete(int dni, int id_paquete) {
+        set("id",null,"dni",dni,"id_paquete",id_paquete);
     }
 
     public String getId(){

@@ -67,17 +67,21 @@ insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,1,"Balsas","paseo el balsas por el rio Iguazu",800);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,1,"Parque Nacional","Visita al Parque Nacional Iguazu",400);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,2,"","",0);
+insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,2,"La Banda","visita a La Banda por puente carretero,museo bicentenario,catedral,mirador las torres",760);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,2,"Isla Del Sol","Visita a la Isla del Sol",300);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,2,"City Tour","paseo guiado por las Termas de Rio Hondo",1300);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,3,"","",0);
+insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,3,"SanIsidro+Tigre+Delta"," Paseo en lancha",0);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,3,"Parque de la costa","Visita la parque de la costa",700);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,3,"Tango","cena y show de tango",1100);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,4,"","",0);
+insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,4,"Teatro","Incluye una noche de teatro",650);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,4,"Catamaran","Paseo por el lago San Roque",800);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,4,"Aerosilla","Subida la cerro en aerosiilla",500);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,5,"","",0);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,5,"Virgen","visita a la virgen del cerro ",600);
 insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,5,"Tren de las Nubes","recorrido en tren con vista a hermosos paisajes",1200);
+insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values (NULL,5,"Garganta del Diablo","visita a la garganta del diablo cayafate",900);
 
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,21345987, 1);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,25476234, 1);
@@ -103,11 +107,11 @@ insert into atraccion_clientes (id_cliente_paquete,id_atraccion) values (5, 11);
 insert into efectivos (id_paquete,monto_total_descuento,fecha) values (1,4685.99,"2019-07-26");
 insert into efectivos (id_paquete,monto_total_descuento,fecha) values (2,5862.55,"2019-06-25");
 
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (3,1,12,"2019-07-02","2020-07-02");
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (4,2,18,"2019-07-06","2021-1-06");
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (5,3,6,"2019-06-29","2019-12-29");
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (6,4,12,"2019-08-15","2020-08-15");
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (7,5,12,"2019-08-11","2020-08-11");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (3,NULL,12,"2019-07-02","2020-07-02");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (4,NULL,18,"2019-07-06","2021-1-06");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (5,NULL,6,"2019-06-29","2019-12-29");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (6,NULL,12,"2019-08-15","2020-08-15");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (7,NULL,12,"2019-08-11","2020-08-11");
 
 insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2019-07-11","paga");
 insert into cuotas (nro_plan,monto,fecha,estado) values (2,320.50,"2019-08-15","por vencer");

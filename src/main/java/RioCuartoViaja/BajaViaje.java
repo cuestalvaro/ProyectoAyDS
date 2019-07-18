@@ -57,13 +57,23 @@ public class BajaViaje extends javax.swing.JFrame {
         Base.close();
     }
 
-    public void eliminar(String dni){
+    public void eliminar(){
         Base.open();
+        String dni = new String (jTextField3.getText());
+        List<AtraccionCliente> atraccion = AtraccionCliente.findAll();
+		if(!atraccion.isEmpty()){
+            for(AtraccionCliente i : atraccion){
+                if (i.getDni().equals()){
+                    i.deleteCascade();
+                }
+            }
+        }
+
         List<ClientePaquete> abu = ClientePaquete.findAll();
 		if(!abu.isEmpty()){
             for(ClientePaquete i : abu){
                 if (i.getDni().equals(dni)){
-                    i.delete();
+                    i.deleteCascade();
                 }
             }
         }
@@ -427,8 +437,7 @@ public class BajaViaje extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int resp=JOptionPane.showConfirmDialog(null,"seguro deseas eliminar?");
         if (JOptionPane.OK_OPTION == resp){
-            String dni = new String (jTextField3.getText());
-            eliminar(dni);
+            eliminar();
             limpiarText();
         }
 

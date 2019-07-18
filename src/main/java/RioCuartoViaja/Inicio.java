@@ -88,7 +88,7 @@ public class Inicio extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(76, 76, 76));
         jButton3.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(1, 1, 1));
-        jButton3.setText("NUEVO PASAJERO");
+        jButton3.setText("NUEVO CLIENTE");
         jButton3.setBorder(null);
         jButton3.setContentAreaFilled(false);
         jButton3.setOpaque(true);
@@ -101,7 +101,7 @@ public class Inicio extends javax.swing.JFrame {
         jButton4.setBackground(new java.awt.Color(76, 76, 76));
         jButton4.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jButton4.setForeground(new java.awt.Color(1, 1, 1));
-        jButton4.setText("DAR DE BAJA PASAJERO");
+        jButton4.setText("DAR DE BAJA CLIENTE");
         jButton4.setBorder(null);
         jButton4.setContentAreaFilled(false);
         jButton4.setOpaque(true);
@@ -114,7 +114,7 @@ public class Inicio extends javax.swing.JFrame {
         jButton5.setBackground(new java.awt.Color(76, 76, 76));
         jButton5.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jButton5.setForeground(new java.awt.Color(1, 1, 1));
-        jButton5.setText("MODIFICAR PASAJERO");
+        jButton5.setText("MODIFICAR CLIENTE");
         jButton5.setBorder(null);
         jButton5.setContentAreaFilled(false);
         jButton5.setOpaque(true);
@@ -127,7 +127,7 @@ public class Inicio extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(76, 76, 76));
         jButton1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(1, 1, 1));
-        jButton1.setText("CONSULTAR PASAJERO");
+        jButton1.setText("CONSULTAR CLIENTE");
         jButton1.setBorder(null);
         jButton1.setContentAreaFilled(false);
         jButton1.setOpaque(true);

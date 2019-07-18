@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS atraccion_turisticas (
 	id int(10) NOT NULL AUTO_INCREMENT,
 	id_paquete int(10) NOT NULL,
 	nombre varchar(45),
-	descripcion varchar (80),
+	descripcion varchar (200),
 	costo float(10),
 	PRIMARY KEY (id),
 	CONSTRAINT fk_id_paquete_at_tur FOREIGN KEY (id_paquete) REFERENCES paquete_turisticos (id)
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS atraccion_clientes (
 	id_cliente_paquete int(10) NOT NULL,
 	id_atraccion int(8) NOT NULL,
 	PRIMARY KEY (id_cliente_paquete,id_atraccion),
-	CONSTRAINT fk_id_cliente_pac_atrac FOREIGN KEY (id_cliente_paquete) REFERENCES cliente_paquetes (id),
+	CONSTRAINT fk_id_cliente_pac_atrac FOREIGN KEY (id_cliente_paquete) REFERENCES cliente_paquetes (id) ON DELETE CASCADE,
 	CONSTRAINT fk_id_atraccion_atracc FOREIGN KEY (id_atraccion) REFERENCES atraccion_turisticas (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS efectivos(
 DROP TABLE IF EXISTS plan_cuotas;
 CREATE TABLE IF NOT EXISTS plan_cuotas (
 	id_paquete int(10) NOT NULL,
-	nro_plan int(10) NOT NULL,
+	nro_plan int(10) NOT NULL AUTO_INCREMENT,
 	cant_cuotas int(2) CHECK (cant_cuotas>=2 and cant_cuotas<=20),
 	fecha_inc date,
 	fecha_fin date,

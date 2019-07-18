@@ -42,7 +42,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
         Base.open();
         buscarCliente(dni);
         buscarFichaMedica(dni);
-        buscarPaqueteCliente(dni);
+     //   buscarPaqueteCliente(dni);
         Base.close();
     }
     public void buscarCliente (String dni){
@@ -76,6 +76,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
 			}
         }
     }
+    /*
     public void buscarPaqueteCliente (String dni){
         List<String> listAtraccion = new LinkedList<String>();
         List<ClientePaquete> paquete = ClientePaquete.findAll();
@@ -151,7 +152,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
         }
         return atracc;
     }
-
+*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

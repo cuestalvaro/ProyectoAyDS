@@ -5,16 +5,16 @@ public class Efectivo extends Model {
 
     public Efectivo() {}
 
-    public Efectivo(int id_pago,float monto_total_descuento,String fecha ){
-        set("id_pago",id_pago,"monto_total_descuento",monto_total_descuento,"fecha",fecha);
+    public Efectivo(int id_paquete,float monto_total_descuento,String fecha ){
+        set("id_paquete",id_paquete,"monto_total_descuento",monto_total_descuento,"fecha",fecha);
     }
 
-    public String getIdPago(){
-        return getString("id_pago");
+    public String getIdPaquete(){
+        return getString("id_paquete");
     }
 
-    public void setIdPago(int id_pago){
-        set("id_pago",id_pago);
+    public void setIdPago(int id_paquete){
+        set("id_paquete",id_paquete);
     }
 
     public String getMontoDescuento(){
@@ -33,7 +33,7 @@ public class Efectivo extends Model {
         set("fecha",fecha);
     }
 
-    public void setEfectivo(int id_pago,float monto_total_descuento,String fecha ){
-        set("id_pago",id_pago,"monto_total_descuento",monto_total_descuento,"fecha",fecha);
+    public void setEfectivo(int id_paquete,float monto_total_descuento,String fecha ){
+        set("id_paquete",id_paquete,"monto_total_descuento",monto_total_descuento,"fecha",fecha);
     }
 }
