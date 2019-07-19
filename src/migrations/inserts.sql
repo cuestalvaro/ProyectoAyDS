@@ -21,7 +21,8 @@ insert into administrativos (dni,turno) values	(31562856, "mañana");
 insert into administrativos (dni,turno) values	(29987432, "mañana");
 insert into administrativos (dni,turno) values	(33498123, "tarde");
 
-insert into agrupacion_jubilados(nombre,direccion,telefono) values("No tiene","","");
+insert into agrupacion_jubilados(nombre,direccion,telefono) values("NO TIENE","","");
+insert into agrupacion_jubilados(nombre,direccion,telefono) values("OTROS","","");
 insert into agrupacion_jubilados(nombre,direccion,telefono) values("Abuelos Unidos","Av. Italia 1351","358469665");
 insert into agrupacion_jubilados(nombre,direccion,telefono) values("Vivir","Irigoyen 865","358466542");
 insert into agrupacion_jubilados(nombre,direccion,telefono) values("Jubilados Felices","San Martin 145","358498969");

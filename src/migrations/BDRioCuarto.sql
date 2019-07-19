@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS ficha_medicas (
 	frecuencia varchar (45),
 	medicamento_alergico varchar (45),
 	CONSTRAINT unique_ficha UNIQUE (dni),
-	CONSTRAINT fk_dni_ficha FOREIGN KEY (dni) REFERENCES clientes (dni)
+	CONSTRAINT fk_dni_ficha FOREIGN KEY (dni) REFERENCES clientes (dni) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS traslados;
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS efectivos(
 	id_paquete int(10) NOT NULL,
 	monto_total_descuento float(10),
 	fecha date,
-	CONSTRAINT fk_id_paquete_ef FOREIGN KEY (id_paquete) REFERENCES cliente_paquetes (id)
+	CONSTRAINT fk_id_paquete_ef FOREIGN KEY (id_paquete) REFERENCES cliente_paquetes (id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS plan_cuotas;
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS plan_cuotas (
 	fecha_inc date,
 	fecha_fin date,
 	PRIMARY KEY (nro_plan),
-	CONSTRAINT fk_id_paquete_cuota FOREIGN KEY (id_paquete) REFERENCES cliente_paquetes (id)
+	CONSTRAINT fk_id_paquete_cuota FOREIGN KEY (id_paquete) REFERENCES cliente_paquetes (id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS cuotas;
@@ -135,5 +135,5 @@ CREATE TABLE IF NOT EXISTS cuotas (
 	monto float(10),
 	fecha date,
 	estado enum ('paga','vencida','por vencer'),
-	CONSTRAINT fk_nro_plan FOREIGN KEY (nro_plan) REFERENCES plan_cuotas (nro_plan)
+	CONSTRAINT fk_nro_plan FOREIGN KEY (nro_plan) REFERENCES plan_cuotas (nro_plan) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;

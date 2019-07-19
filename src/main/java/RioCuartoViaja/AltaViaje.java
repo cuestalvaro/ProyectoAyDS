@@ -38,7 +38,11 @@ public class AltaViaje extends javax.swing.JFrame {
         Base.close();
     }
     public void altaClienteConDatos(){
-    
+        Base.open();
+        cargarClientePaquete();
+        cargarAtraccionPaquete();
+        cargarFormaPago();
+        Base.close();
     }
 
     public void cargarDatosPersonales(){

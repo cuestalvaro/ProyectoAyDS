@@ -1,5 +1,6 @@
 package RioCuartoViaja;
 
+import java.util.LinkedList;
 import java.util.List;
 import org.javalite.activejdbc.*;
 import javax.swing.JOptionPane;
@@ -59,26 +60,40 @@ public class BajaViaje extends javax.swing.JFrame {
 
     public void eliminar(){
         Base.open();
-        String dni = new String (jTextField3.getText());
+        int dni = Integer.parseInt(jTextField3.getText());
+        Cliente abu = Cliente.findById(dni);
+        //eliminarEfectivo(abu.getIdPaquete());
+       // eliminarPlanCuota(abu.getIdPaquete());
+       // eliminarAtraccion (abu.getId());
+        abu.delete();  
+        Base.close();
+    }    
+/*
+    public void eliminarAtraccion (String id){
         List<AtraccionCliente> atraccion = AtraccionCliente.findAll();
 		if(!atraccion.isEmpty()){
             for(AtraccionCliente i : atraccion){
-                if (i.getDni().equals()){
+                if (i.getIdClientePaquete().equals(id)){
                     i.deleteCascade();
                 }
-            }
+			}
         }
+    }
+    public void eliminarEfectivo (String id_paquete){
+        Efectivo efectivo = Efectivo.findFirst("id_paquete = ?", Integer.parseInt(id_paquete));
+        efectivo.delete();
+    }
 
-        List<ClientePaquete> abu = ClientePaquete.findAll();
-		if(!abu.isEmpty()){
-            for(ClientePaquete i : abu){
-                if (i.getDni().equals(dni)){
-                    i.deleteCascade();
-                }
-            }
-        }
-        Base.close();
-    }    
+    public void eliminarPlanCuota (String id_paquete){
+        PlanCuota plan = PlanCuota.findFirst("id_paquete = ?", Integer.parseInt(id_paquete));
+        eliminarCuota(plan.getNroPlan());
+        plan.delete();
+    }
+    public void eliminarCuota (String nro_plan){
+        Cuota cuota = Cuota.findFirst("nro_plan = ?", Integer.parseInt(nro_plan));
+        cuota.delete();
+    }
+    */
     public void limpiarText(){
         jLabel13.setText("");
         jLabel11.setText(""); 
