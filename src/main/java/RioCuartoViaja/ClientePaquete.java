@@ -33,7 +33,7 @@ public class ClientePaquete extends Model {
         set("id_paquete",id_paquete);
     }
 
-    public void setClientePaquete(int id,int dni, int id_paquete) {
-        set("id",id,"dni",dni,"id_paquete",id_paquete);
+    public void setClientePaquete(int dni, int id_paquete) {
+        set("dni",dni,"id_paquete",id_paquete);
     }
 }

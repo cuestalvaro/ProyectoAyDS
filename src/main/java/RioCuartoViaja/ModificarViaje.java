@@ -30,8 +30,9 @@ public class ModificarViaje extends javax.swing.JFrame {
     public void realizarCambios(){
         Base.open();
         cargarDatosPersonales();
-       // cargarFichaMedica();
-        //cargarClientePaquete();
+        cargarFichaMedica();
+        cargarClientePaquete();
+        cargarAtraccionPaquete();
         Base.close();
     }
 
@@ -47,17 +48,18 @@ public class ModificarViaje extends javax.swing.JFrame {
         modificarCliente.setCliente(dni,nombre,apellido,direccion,telefono,nombre_agrupacion);
         modificarCliente.saveIt();
     }
-    /*
+    
     public void cargarFichaMedica(){
-        int dni = Integer.parseInt(jTextField1.getText());
+        int dni = Integer.parseInt(jTextField2.getText());
         String nombre_enfermedad = new String (jTextField6.getText());
         String es_cronica = new String (jTextField7.getText());
         String nombre_medicamento = new String (jTextField8.getText());
         String frecuencia = new String (jTextField9.getText());
         String medicamento_alergico = new String (jTextField10.getText());
 
-        FichaMedica nuevaFicha = new FichaMedica(dni, nombre_enfermedad, es_cronica, nombre_medicamento, frecuencia, medicamento_alergico);
-        nuevaFicha.saveIt();
+        FichaMedica modificarFicha = FichaMedica.findFirst("dni = ?",dni);
+        modificarFicha.setFichaMedica(dni, nombre_enfermedad, es_cronica, nombre_medicamento, frecuencia, medicamento_alergico);
+        modificarFicha.saveIt();
     }
 
     public void cargarClientePaquete(){
@@ -67,13 +69,14 @@ public class ModificarViaje extends javax.swing.JFrame {
         PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
         int id_paquete = Integer.parseInt(dest.getId());
         
-        ClientePaquete nuevoClientePaquete = new ClientePaquete(dni, id_paquete);
-        nuevoClientePaquete.saveIt();
+        ClientePaquete modificarClientePaquete = ClientePaquete.find("dni",dni,"id_paquete",id_paquete);
+        modificarClientePaquete.setClientePaquete(dni, id_paquete);
+        modificarClientePaquete.saveIt();
     }
 
     public void cargarAtraccionPaquete(){
 
-        String dni = jTextField1.getText(); 
+        String dni = jTextField2.getText(); 
         String destino = jComboBox1.getSelectedItem().toString();
         PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
         int id_paquete = Integer.parseInt(dest.getId());
@@ -103,13 +106,17 @@ public class ModificarViaje extends javax.swing.JFrame {
                     id_atraccion3 =  Integer.parseInt(i.getId());
 			}
         }
-        AtraccionCliente nuevaAtraccionCliente1 = new AtraccionCliente (id_cliente_paquete,id_atraccion1);
-        nuevaAtraccionCliente1.saveIt();
-        AtraccionCliente nuevaAtraccionCliente2 = new AtraccionCliente (id_cliente_paquete,id_atraccion2);
-        nuevaAtraccionCliente2.saveIt();
-        AtraccionCliente nuevaAtraccionCliente3 = new AtraccionCliente (id_cliente_paquete,id_atraccion3);
-        nuevaAtraccionCliente3.saveIt();
-    }*/
+        List<AtraccionCliente> listAtraccionCliente =  AtraccionCliente.where("id_cliente_paquete = ?",id_cliente_paquete);
+        modAtraccionCliente1 = listAtraccionCliente.get(0);
+        modAtraccionCliente1.setAtraccionCliente(id_cliente_paquete,id_atraccion1);
+        modAtraccionCliente1.saveIt();
+        modAtraccionCliente2 = listAtraccionCliente.get(1);
+        modAtraccionCliente2.setAtraccionCliente(id_cliente_paquete,id_atraccion2);
+        modAtraccionCliente2.saveIt();
+        modAtraccionCliente3 = listAtraccionCliente.get(2);
+        modAtraccionCliente3.setAtraccionCliente(id_cliente_paquete,id_atraccion3);
+        modAtraccionCliente3.saveIt();
+    }
     /**
      * 
     */
