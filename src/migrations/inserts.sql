@@ -91,12 +91,14 @@ insert into cliente_paquetes (id,dni,id_paquete) values (NULL,15256352, 3);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,10225665, 4);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,52256654, 4);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,10226554, 2);
-insert into cliente_paquetes (id,dni,id_paquete) values (NULL,10226554, 2);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,16223665, 5);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,18885644, 4);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,14556987, 3);
 
 insert into atraccion_clientes (id_cliente_paquete,id_atraccion) values (1, 1);
+insert into atraccion_clientes (id_cliente_paquete,id_atraccion) values (7, 6);
+insert into atraccion_clientes (id_cliente_paquete,id_atraccion) values (7, 7);
+insert into atraccion_clientes (id_cliente_paquete,id_atraccion) values (7, 8);
 insert into atraccion_clientes (id_cliente_paquete,id_atraccion) values (1, 2);
 insert into atraccion_clientes (id_cliente_paquete,id_atraccion) values (1, 3);
 insert into atraccion_clientes (id_cliente_paquete,id_atraccion) values (3, 5);

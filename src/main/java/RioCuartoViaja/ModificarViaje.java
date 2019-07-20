@@ -12,8 +12,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         initComponents();
     }
 
-    public boolean buscarDni (String dni){
+    public boolean buscarDni (){
         Base.open();
+        String dni = new String (jTextField2.getText());
         boolean a = false;
         List<Cliente> cliente = Cliente.findAll();
 		if(!cliente.isEmpty()){
@@ -26,25 +27,27 @@ public class ModificarViaje extends javax.swing.JFrame {
         Base.close();
         return a;
     }
-    public void mostrarCampos(String dni){
+    public void realizarCambios(){
         Base.open();
         cargarDatosPersonales();
-        cargarFichaMedica();
-        cargarClientePaquete();
-        cargarAtraccionPaquete();
-        cargarFormaPago();
+       // cargarFichaMedica();
+        //cargarClientePaquete();
         Base.close();
     }
+
     public void cargarDatosPersonales(){
-        int dni = Integer.parseInt(jTextField1.getText());
-        String nombre = new String (jTextField2.getText());
-        String apellido = new String (jTextField3.getText());
+        int dni = Integer.parseInt(jTextField2.getText());
+        String nombre = new String (jTextField3.getText());
+        String apellido = new String (jTextField1.getText());
         String direccion = new String (jTextField5.getText());
         String telefono = new String (jTextField4.getText());
-        String nombre_agrupacion = new String (jComboBox5.getSelectedItem().toString());
-        Cliente nuevoCliente = new Cliente(dni,nombre,apellido,direccion,telefono,nombre_agrupacion);
-        nuevoCliente.saveIt();
+        String nombre_agrupacion = new String (jComboBoxAgrupacion.getSelectedItem().toString());
+
+        Cliente modificarCliente = Cliente.findFirst("dni = ?",dni);
+        modificarCliente.setCliente(dni,nombre,apellido,direccion,telefono,nombre_agrupacion);
+        modificarCliente.saveIt();
     }
+    /*
     public void cargarFichaMedica(){
         int dni = Integer.parseInt(jTextField1.getText());
         String nombre_enfermedad = new String (jTextField6.getText());
@@ -106,34 +109,126 @@ public class ModificarViaje extends javax.swing.JFrame {
         nuevaAtraccionCliente2.saveIt();
         AtraccionCliente nuevaAtraccionCliente3 = new AtraccionCliente (id_cliente_paquete,id_atraccion3);
         nuevaAtraccionCliente3.saveIt();
+    }*/
+    /**
+     * 
+    */
+    public void mostrarCampos(){
+        Base.open();
+        mostrarDatosPersonales();
+        mostrarFichaMedica();
+        mostrarClientePaquete();
+        Base.close();
+    }
+    public void mostrarDatosPersonales(){
+        int dni = Integer.parseInt(jTextField2.getText());
+        Cliente cliente = Cliente.findFirst("dni = ?",dni);
+        jTextField3.setText(cliente.getNombre());
+        jTextField1.setText(cliente.getApellido());
+        jTextField4.setText(cliente.getTelefono());
+        jTextField5.setText(cliente.getDireccion());
+        agregarItemComboBoxAgrupacion(cliente.getNombreAgrupacion());
     }
 
-    public void agregarItemComboBoxDestino(){
-        Base.open();
-        jComboBox1.addItem("");
+    public void mostrarFichaMedica(){
+        int dni = Integer.parseInt(jTextField2.getText());
+        FichaMedica ficha = FichaMedica.findFirst("dni = ?",dni);
+        jTextField6.setText(ficha.getNombreEnfermedad());
+        jTextField7.setText(ficha.getEsCronica());
+        jTextField8.setText(ficha.getNombreMedicamento());
+        jTextField9.setText(ficha.getFrecuencia());
+        jTextField10.setText(ficha.getMedicamentoAlergico());
+    }
+
+    public void mostrarClientePaquete(){
+        int dni = Integer.parseInt(jTextField2.getText());  
+        ClientePaquete cliente = ClientePaquete.findFirst("dni = ?",dni);
+        int id_paquete = Integer.parseInt(cliente.getIdPaquete()); 
+        int id_cliente_paquete = Integer.parseInt(cliente.getId()); 
+        PaqueteTuristico dest = PaqueteTuristico.findFirst("id = ?",id_paquete);
+        agregarItemComboBoxDestino(dest.getDestino());
+        agregarItemComboBoxAtraccion();
+    /*
+        List<AtraccionCliente> listAtra = AtraccionCliente.where("id_cliente_paquete = ?",id_cliente_paquete);
+        AtraccionTuristica atraccion1 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(0).getIdAtraccion())); 
+        String nombreAtr1 = atraccion1.getNombre(); 
+        AtraccionTuristica atraccion2 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(1).getIdAtraccion())); 
+        String nombreAtr2 = atraccion1.getNombre();
+        AtraccionTuristica atraccion3 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(2).getIdAtraccion())); 
+        String nombreAtr3 = atraccion1.getNombre();
+        agregarItemComboBoxAtraccion(nombreAtr1, nombreAtr2, nombreAtr3);*/
+      
+    }
+
+    public void limpiarText(){
+        jTextField1.setText("");
+        jTextField2.setText(""); 
+        jTextField3.setText(""); 
+        jTextField4.setText(""); 
+        jTextField5.setText(""); 
+        jTextField6.setText(""); 
+        jTextField7.setText(""); 
+        jTextField8.setText("");
+        jTextField9.setText(""); 
+        jTextField10.setText("");  
+        jComboBox1.removeAllItems();
+        jComboBox2.removeAllItems();
+        jComboBox3.removeAllItems();
+        jComboBox4.removeAllItems();
+        jComboBoxAgrupacion.removeAllItems();
+    }
+
+    public void agregarItemComboBoxAgrupacion(String nomAgrupacion){
+        jComboBoxAgrupacion.removeAllItems();
+        jComboBoxAgrupacion.addItem(nomAgrupacion);
+        List<AgrupacionJubilado> agrupacion = AgrupacionJubilado.findAll();
+        if(!agrupacion.isEmpty()){
+            for(AgrupacionJubilado i : agrupacion){
+                if (i.getNombre().equals(nomAgrupacion))
+                    continue;
+                else
+                    jComboBoxAgrupacion.addItem(i.getNombre());
+            }
+        }
+        jComboBoxAgrupacion.addItem("");
+       
+    }
+    public void agregarItemComboBoxDestino(String destino){
+        jComboBox1.removeAllItems();
+        jComboBox1.addItem(destino);
         List<PaqueteTuristico> paquete = PaqueteTuristico.findAll();
 		if(!paquete.isEmpty()){
             for(PaqueteTuristico i : paquete){
-                jComboBox1.addItem(i.getDestino());
+                if(i.getDestino().equals(destino))
+                    continue;
+                else
+                    jComboBox1.addItem(i.getDestino());
 			}
         }
-        Base.close();
+    } 
+
+    public void agregarItemComboBoxAtraccion(String atr1,String atr2, String atr3){    
+        jComboBox2.removeAllItems();
+        jComboBox2.addItem(atr1);
+        jComboBox2.addItem(atr2);
+        jComboBox2.addItem(atr3);
+        jComboBox2.addItem("");
+
+        jComboBox3.removeAllItems();
+        jComboBox3.addItem(atr2);
+        jComboBox3.addItem(atr1);
+        jComboBox3.addItem(atr3);
+        jComboBox3.addItem("");
+
+        jComboBox4.removeAllItems();
+        jComboBox4.addItem(atr3);
+        jComboBox4.addItem(atr2);
+        jComboBox4.addItem(atr1);
+        jComboBox4.addItem("");       
+    
     }
 
-    public void agregarItemComboBoxAgrupacion(){
-        Base.open();
-        jComboBoxAgrupacion.addItem("");
-        List<AgrupacionJubilado> agrupacion = AgrupacionJubilado.findAll();
-		if(!agrupacion.isEmpty()){
-            for(AgrupacionJubilado i : agrupacion){
-                jComboBoxAgrupacion.addItem(i.getNombre());
-			}
-        }
-        Base.close();
-    }
-    
     public void agregarItemComboBoxAtraccion(){    
-        Base.open();
         String destino = jComboBox1.getSelectedItem().toString();
         String id_paquete = "";
 
@@ -159,7 +254,6 @@ public class ModificarViaje extends javax.swing.JFrame {
                 }
             }
         }
-        Base.close();
     }
 
     @SuppressWarnings("unchecked")
@@ -167,6 +261,7 @@ public class ModificarViaje extends javax.swing.JFrame {
     private void initComponents() {
 
         setResizable(false);
+        
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -639,10 +734,6 @@ public class ModificarViaje extends javax.swing.JFrame {
                     .addGap(0, 91, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
-
-        agregarItemComboBoxDestino();
-        agregarItemComboBoxAtraccion();
-        agregarItemComboBoxAgrupacion();
         pack();
         setSize(880,560);
     }// END:initComponents
@@ -655,19 +746,24 @@ public class ModificarViaje extends javax.swing.JFrame {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        
+        int resp=JOptionPane.showConfirmDialog(null,"DESEA GUARDAR LOS CAMBIOS?");
+        if (JOptionPane.OK_OPTION == resp){
+            realizarCambios();
+            limpiarText();
+        }
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-        String dni = new String (jTextField2.getText());
-        if (buscarDni(dni))
-            mostrarCampos(dni);
+        if (buscarDni())
+            mostrarCampos();
         else
             JOptionPane.showMessageDialog(null, "DNI INCORRECTO");
     }
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {  
+        Base.open();                                       
         agregarItemComboBoxAtraccion();
+        Base.close();
     } 
 
     /**
