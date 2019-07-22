@@ -64,12 +64,12 @@ public class ModificarViaje extends javax.swing.JFrame {
 
     public void cargarClientePaquete(){
 
-        int dni = Integer.parseInt(jTextField1.getText());  
+        int dni = Integer.parseInt(jTextField2.getText());  
         String destino = jComboBox1.getSelectedItem().toString();
         PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
         int id_paquete = Integer.parseInt(dest.getId());
         
-        ClientePaquete modificarClientePaquete = ClientePaquete.find("dni",dni,"id_paquete",id_paquete);
+        ClientePaquete modificarClientePaquete = ClientePaquete.findFirst("dni = ?",dni);
         modificarClientePaquete.setClientePaquete(dni, id_paquete);
         modificarClientePaquete.saveIt();
     }
@@ -107,15 +107,16 @@ public class ModificarViaje extends javax.swing.JFrame {
 			}
         }
         List<AtraccionCliente> listAtraccionCliente =  AtraccionCliente.where("id_cliente_paquete = ?",id_cliente_paquete);
-        modAtraccionCliente1 = listAtraccionCliente.get(0);
+        AtraccionCliente modAtraccionCliente1 = listAtraccionCliente.get(0);
         modAtraccionCliente1.setAtraccionCliente(id_cliente_paquete,id_atraccion1);
         modAtraccionCliente1.saveIt();
-        modAtraccionCliente2 = listAtraccionCliente.get(1);
+        AtraccionCliente modAtraccionCliente2 = listAtraccionCliente.get(1);
         modAtraccionCliente2.setAtraccionCliente(id_cliente_paquete,id_atraccion2);
         modAtraccionCliente2.saveIt();
-        modAtraccionCliente3 = listAtraccionCliente.get(2);
+        AtraccionCliente modAtraccionCliente3 = listAtraccionCliente.get(2);
         modAtraccionCliente3.setAtraccionCliente(id_cliente_paquete,id_atraccion3);
         modAtraccionCliente3.saveIt();
+        System.out.println(listAtraccionCliente.size());
     }
     /**
      * 
@@ -154,17 +155,7 @@ public class ModificarViaje extends javax.swing.JFrame {
         int id_cliente_paquete = Integer.parseInt(cliente.getId()); 
         PaqueteTuristico dest = PaqueteTuristico.findFirst("id = ?",id_paquete);
         agregarItemComboBoxDestino(dest.getDestino());
-        agregarItemComboBoxAtraccion();
-    /*
-        List<AtraccionCliente> listAtra = AtraccionCliente.where("id_cliente_paquete = ?",id_cliente_paquete);
-        AtraccionTuristica atraccion1 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(0).getIdAtraccion())); 
-        String nombreAtr1 = atraccion1.getNombre(); 
-        AtraccionTuristica atraccion2 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(1).getIdAtraccion())); 
-        String nombreAtr2 = atraccion1.getNombre();
-        AtraccionTuristica atraccion3 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(2).getIdAtraccion())); 
-        String nombreAtr3 = atraccion1.getNombre();
-        agregarItemComboBoxAtraccion(nombreAtr1, nombreAtr2, nombreAtr3);*/
-      
+        agregarItemComboBoxAtraccion();  
     }
 
     public void limpiarText(){

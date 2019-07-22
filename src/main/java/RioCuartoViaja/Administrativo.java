@@ -1,6 +1,8 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.IdName;
 
+@IdName("dni")
 public class Administrativo extends Model {
 
     public Administrativo() {}

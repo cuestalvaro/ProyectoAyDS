@@ -1,6 +1,8 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.IdName;
 
+@IdName("nombre")
 public class AgrupacionJubilado extends Model {
 
     public AgrupacionJubilado() {}

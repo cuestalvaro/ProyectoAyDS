@@ -13,7 +13,7 @@ public class Efectivo extends Model {
         return getString("id_paquete");
     }
 
-    public void setIdPago(int id_paquete){
+    public void setIdPaquete(int id_paquete){
         set("id_paquete",id_paquete);
     }
 

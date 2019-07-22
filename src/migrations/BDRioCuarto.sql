@@ -103,9 +103,10 @@ CREATE TABLE IF NOT EXISTS cliente_paquetes (
 
 DROP TABLE IF EXISTS atraccion_clientes;
 CREATE TABLE IF NOT EXISTS atraccion_clientes (
+	id int(10) NOT NULL AUTO_INCREMENT,
 	id_cliente_paquete int(10) NOT NULL,
 	id_atraccion int(8) NOT NULL,
-	PRIMARY KEY (id_cliente_paquete,id_atraccion),
+	PRIMARY KEY (id),
 	CONSTRAINT fk_id_cliente_pac_atrac FOREIGN KEY (id_cliente_paquete) REFERENCES cliente_paquetes (id) ON DELETE CASCADE,
 	CONSTRAINT fk_id_atraccion_atracc FOREIGN KEY (id_atraccion) REFERENCES atraccion_turisticas (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;

@@ -1,12 +1,14 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.IdName;
 
+@IdName("id")
 public class AtraccionCliente extends Model {
 
     public AtraccionCliente() {}
 
     public AtraccionCliente(int id_cliente_paquete, int id_atraccion) {
-        set("id_cliente_paquete", id_cliente_paquete,"id_atraccion",id_atraccion);
+        set("id","NULL","id_cliente_paquete", id_cliente_paquete,"id_atraccion",id_atraccion);
     }
 
     public String getIdClientePaquete(){

@@ -1,6 +1,8 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.IdName;
 
+@IdName("id")
 public class Traslado extends Model {
 
     public Traslado() {}

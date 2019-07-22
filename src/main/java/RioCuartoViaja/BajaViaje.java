@@ -53,11 +53,11 @@ public class BajaViaje extends javax.swing.JFrame {
     public void eliminar(){
         Base.open();
         int dni = Integer.parseInt(jTextField3.getText());
-        Cliente abu = Cliente.findById(dni);
+        Cliente abu = Cliente.findFirst("dni = ?",dni);
         //eliminarEfectivo(abu.getIdPaquete());
        // eliminarPlanCuota(abu.getIdPaquete());
        // eliminarAtraccion (abu.getId());
-        abu.delete();  
+        abu.deleteCascade();  
         Base.close();
     }    
 /*

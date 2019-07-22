@@ -29,23 +29,24 @@ public class AltaViaje extends javax.swing.JFrame {
     }
 
     public void altaClienteSinDatos(){
-        Base.open();
         cargarDatosPersonales();
+        Base.open();
         cargarFichaMedica();
         cargarClientePaquete();
         cargarAtraccionPaquete();
         cargarFormaPago();
         Base.close();
     }
-    public void altaClienteConDatos(){
+    /*public void altaClienteConDatos(){
         Base.open();
         cargarClientePaquete();
         cargarAtraccionPaquete();
         cargarFormaPago();
         Base.close();
-    }
+    }*/
 
     public void cargarDatosPersonales(){
+        Base.open();
         int dni = Integer.parseInt(jTextField1.getText());
         String nombre = new String (jTextField2.getText());
         String apellido = new String (jTextField3.getText());
@@ -54,6 +55,7 @@ public class AltaViaje extends javax.swing.JFrame {
         String nombre_agrupacion = new String (jComboBox5.getSelectedItem().toString());
         Cliente nuevoCliente = new Cliente(dni,nombre,apellido,direccion,telefono,nombre_agrupacion);
         nuevoCliente.saveIt();
+        Base.close();
     }
     public void cargarFichaMedica(){
         int dni = Integer.parseInt(jTextField1.getText());
@@ -849,7 +851,7 @@ public class AltaViaje extends javax.swing.JFrame {
         else{
             String dni = new String (jTextField1.getText());
             if (buscarDni(dni))
-                altaClienteConDatos();
+            JOptionPane.showMessageDialog(null, "DNI existente");
             else
                 altaClienteSinDatos();
         }  
