@@ -1,6 +1,10 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-
+/**
+ * Clase que modela la tabla efectivos de la base datos RioCuartoViaja
+ * que representa la forma de pago en efectivo
+ * @author Álvaro Cuesta
+ */
 public class Efectivo extends Model {
 
     public Efectivo() {}

@@ -1,7 +1,11 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.IdName;
-
+/**
+ * Clase que modela la tabla plan_cuotas de la base datos RioCuartoViaja
+ * que representa la forma de pago en plan de cuotas
+ * @author Álvaro Cuesta
+ */
 @IdName("nro_plan")
 public class PlanCuota extends Model {
 

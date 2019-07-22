@@ -1,8 +1,10 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-import org.javalite.activejdbc.annotations.IdName;
-
-@IdName("id")
+/**
+ * Clase que modela la tabla paquete_turisticos de la base datos RioCuartoViaja
+ * que repesenta los paquete que estan a la venta.
+ * @author Álvaro Cuesta
+ */
 public class PaqueteTuristico extends Model {
 
     public PaqueteTuristico() {}

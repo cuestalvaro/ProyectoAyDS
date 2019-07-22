@@ -1,7 +1,11 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.IdName;
-
+/**
+ * Clase que modela la tabla clientes de la base datos RioCuartoViaja
+ * que representa los cliente de la empresa
+ * @author Álvaro Cuesta
+ */
 @IdName("dni")
 public class Cliente extends Model {
 

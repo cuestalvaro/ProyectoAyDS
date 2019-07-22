@@ -87,28 +87,50 @@ insert into atraccion_turisticas (id,id_paquete,nombre,descripcion,costo) values
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,21345987, 1);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,25476234, 1);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,22752405, 2);
+insert into cliente_paquetes (id,dni,id_paquete) values (NULL,10226554, 2);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,15256352, 3);
+insert into cliente_paquetes (id,dni,id_paquete) values (NULL,14556987, 3);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,10225665, 4);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,52256654, 4);
-insert into cliente_paquetes (id,dni,id_paquete) values (NULL,10226554, 2);
-insert into cliente_paquetes (id,dni,id_paquete) values (NULL,16223665, 5);
 insert into cliente_paquetes (id,dni,id_paquete) values (NULL,18885644, 4);
-insert into cliente_paquetes (id,dni,id_paquete) values (NULL,14556987, 3);
+insert into cliente_paquetes (id,dni,id_paquete) values (NULL,16223665, 5);
 
 insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,1, 1);
-insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,7, 6);
-insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,7, 7);
-insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,7, 8);
 insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,1, 2);
 insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,1, 3);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,2, 1);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,2, 4);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,2, 4);
 insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,3, 5);
-insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,3, 4);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,3, 7);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,3, 8);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,4, 5);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,4, 6);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,4, 8);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,5, 9);
 insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,5, 10);
 insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,5, 11);
-
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,6, 11);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,6, 12);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,6, 12);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,7, 14);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,7, 15);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,7, 16);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,8, 13);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,8, 16);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,8, 16);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,9, 13);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,9, 14);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,9, 15);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,10, 17);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,10, 18);
+insert into atraccion_clientes (id,id_cliente_paquete,id_atraccion) values (NULL,10, 19);
 
 insert into efectivos (id_paquete,monto_total_descuento,fecha) values (1,4685.99,"2019-07-26");
 insert into efectivos (id_paquete,monto_total_descuento,fecha) values (2,5862.55,"2019-06-25");
+insert into efectivos (id_paquete,monto_total_descuento,fecha) values (8,3899.50,"2019-08-13");
+insert into efectivos (id_paquete,monto_total_descuento,fecha) values (9,6823.65,"2019-09-16");
+insert into efectivos (id_paquete,monto_total_descuento,fecha) values (10,9564.99,"2019-07-26");
 
 insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (3,NULL,12,"2019-07-02","2020-07-02");
 insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (4,NULL,18,"2019-07-06","2021-1-06");

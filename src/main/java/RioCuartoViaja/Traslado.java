@@ -1,8 +1,10 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-import org.javalite.activejdbc.annotations.IdName;
-
-@IdName("id")
+/**
+ * Clase que modela la tabla traslados de la base datos RioCuartoViaja
+ * que representa el traslado hacia algun destino
+ * @author Álvaro Cuesta
+ */
 public class Traslado extends Model {
 
     public Traslado() {}

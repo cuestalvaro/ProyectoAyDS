@@ -1,8 +1,10 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-import org.javalite.activejdbc.annotations.IdName;
-
-@IdName("dni")
+/**
+ * Clase que modela la tabla adminitrativos de la base datos RioCuartoViaja
+ * que representas los empleados administrativos de la empresa
+ * @author Álvaro Cuesta
+ */
 public class Administrativo extends Model {
 
     public Administrativo() {}

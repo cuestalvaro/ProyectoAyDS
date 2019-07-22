@@ -3,15 +3,27 @@ import java.util.List;
 import org.javalite.activejdbc.*;
 import javax.swing.JOptionPane;
 import RioCuartoViaja.*;
-
+/**
+ * clase para buscar y modificar datos de
+ * los clientes 
+ * @author Álvaro Cuesta
+ * 
+ */
 public class ModificarViaje extends javax.swing.JFrame {
 
-
+    /**
+     * Construcotr ModificarViaje()
+     */
     public ModificarViaje() {
         
         initComponents();
     }
 
+    /**
+     * Metodo que dice si un dni existe
+     * @param dni del cliente
+     * @return true si el dni pertenece algun clietne false lo contrario
+     */
     public boolean buscarDni (){
         Base.open();
         String dni = new String (jTextField2.getText());
@@ -27,6 +39,10 @@ public class ModificarViaje extends javax.swing.JFrame {
         Base.close();
         return a;
     }
+    /**
+     * Metodo para realizar los cambio correspondiente
+     * en la base de datos
+     */
     public void realizarCambios(){
         Base.open();
         cargarDatosPersonales();
@@ -36,6 +52,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         Base.close();
     }
 
+    /**
+     * Metodo para modiifcar los datos personales del cliente
+     */
     public void cargarDatosPersonales(){
         int dni = Integer.parseInt(jTextField2.getText());
         String nombre = new String (jTextField3.getText());
@@ -49,6 +68,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         modificarCliente.saveIt();
     }
     
+    /**
+     * Metodo para modificar la ficha medica del cliente
+     */
     public void cargarFichaMedica(){
         int dni = Integer.parseInt(jTextField2.getText());
         String nombre_enfermedad = new String (jTextField6.getText());
@@ -62,6 +84,10 @@ public class ModificarViaje extends javax.swing.JFrame {
         modificarFicha.saveIt();
     }
 
+    /**
+     * Metodo para modificar datos relacionado al
+     * paquete del cliente
+     */
     public void cargarClientePaquete(){
 
         int dni = Integer.parseInt(jTextField2.getText());  
@@ -74,6 +100,10 @@ public class ModificarViaje extends javax.swing.JFrame {
         modificarClientePaquete.saveIt();
     }
 
+    /**
+     * Metodo para cambiar las atracciones 
+     * de los clientes
+     */
     public void cargarAtraccionPaquete(){
 
         String dni = jTextField2.getText(); 
@@ -119,7 +149,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         System.out.println(listAtraccionCliente.size());
     }
     /**
-     * 
+     * Metodo para mostrar los campos
+     * con los datos de los clientes y asi
+     * poder modificarlos
     */
     public void mostrarCampos(){
         Base.open();
@@ -128,6 +160,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         mostrarClientePaquete();
         Base.close();
     }
+    /**
+     * Metodo para mostrar datos personales del cliente
+     */
     public void mostrarDatosPersonales(){
         int dni = Integer.parseInt(jTextField2.getText());
         Cliente cliente = Cliente.findFirst("dni = ?",dni);
@@ -137,7 +172,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         jTextField5.setText(cliente.getDireccion());
         agregarItemComboBoxAgrupacion(cliente.getNombreAgrupacion());
     }
-
+    /**
+     * Metodo para mostrar ficha medica del cliente
+     */
     public void mostrarFichaMedica(){
         int dni = Integer.parseInt(jTextField2.getText());
         FichaMedica ficha = FichaMedica.findFirst("dni = ?",dni);
@@ -147,7 +184,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         jTextField9.setText(ficha.getFrecuencia());
         jTextField10.setText(ficha.getMedicamentoAlergico());
     }
-
+    /**
+     * Metood para mostrar el paquete del cliente
+     */
     public void mostrarClientePaquete(){
         int dni = Integer.parseInt(jTextField2.getText());  
         ClientePaquete cliente = ClientePaquete.findFirst("dni = ?",dni);
@@ -158,6 +197,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         agregarItemComboBoxAtraccion();  
     }
 
+    /**
+     * Metodo para limpiar los textos
+     */
     public void limpiarText(){
         jTextField1.setText("");
         jTextField2.setText(""); 
@@ -176,6 +218,9 @@ public class ModificarViaje extends javax.swing.JFrame {
         jComboBoxAgrupacion.removeAllItems();
     }
 
+    /**
+     * Metodo para mostrar en combobox los nombres de las agrupaciones de jubilados
+     */
     public void agregarItemComboBoxAgrupacion(String nomAgrupacion){
         jComboBoxAgrupacion.removeAllItems();
         jComboBoxAgrupacion.addItem(nomAgrupacion);
@@ -191,6 +236,10 @@ public class ModificarViaje extends javax.swing.JFrame {
         jComboBoxAgrupacion.addItem("");
        
     }
+    /**
+     * Metodo para mostrar las atracciones del cliente
+     * @param destino destino del cliente
+     */
     public void agregarItemComboBoxDestino(String destino){
         jComboBox1.removeAllItems();
         jComboBox1.addItem(destino);
@@ -204,28 +253,10 @@ public class ModificarViaje extends javax.swing.JFrame {
 			}
         }
     } 
-
-    public void agregarItemComboBoxAtraccion(String atr1,String atr2, String atr3){    
-        jComboBox2.removeAllItems();
-        jComboBox2.addItem(atr1);
-        jComboBox2.addItem(atr2);
-        jComboBox2.addItem(atr3);
-        jComboBox2.addItem("");
-
-        jComboBox3.removeAllItems();
-        jComboBox3.addItem(atr2);
-        jComboBox3.addItem(atr1);
-        jComboBox3.addItem(atr3);
-        jComboBox3.addItem("");
-
-        jComboBox4.removeAllItems();
-        jComboBox4.addItem(atr3);
-        jComboBox4.addItem(atr2);
-        jComboBox4.addItem(atr1);
-        jComboBox4.addItem("");       
-    
-    }
-
+    /**
+     * Metodo para agregar atracciones del cliente
+     * al combobox
+     */
     public void agregarItemComboBoxAtraccion(){    
         String destino = jComboBox1.getSelectedItem().toString();
         String id_paquete = "";
@@ -254,8 +285,11 @@ public class ModificarViaje extends javax.swing.JFrame {
         }
     }
 
+    //--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
+
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         setResizable(false);
@@ -795,7 +829,7 @@ public class ModificarViaje extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

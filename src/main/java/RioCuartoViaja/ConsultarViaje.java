@@ -5,16 +5,26 @@ import java.util.List;
 import org.javalite.activejdbc.*;
 import javax.swing.JOptionPane;
 import RioCuartoViaja.*;
-
+/**
+ * clase para buscar y consultar datos de
+ * los clientes que estan en la base de datos 
+ * @author Álvaro Cuesta
+ * 
+ */
 public class ConsultarViaje extends javax.swing.JFrame {
 
     /**
-     * Creates new form ConsultarViaje
+     * Constructor de ConsultarViaje
      */
     public ConsultarViaje() {
         initComponents();
     }
 
+    /**
+     * Metodo que dice si un dni existe
+     * @param dni del cliente
+     * @return true si el dni pertenece algun clietne false lo contrario
+     */
     public boolean buscarDni (String dni){
         Base.open();
         boolean a = false;
@@ -29,6 +39,12 @@ public class ConsultarViaje extends javax.swing.JFrame {
         Base.close();
         return a;
     }
+
+    /**
+     * Metodo para buscar los datos de los clientes 
+     * y mostrarlo para modificarlos
+     * @param dni dni de la persona a buscar
+     */
     public void buscarDatos (String dni){
         Base.open();
         buscarCliente(dni);
@@ -36,6 +52,10 @@ public class ConsultarViaje extends javax.swing.JFrame {
         buscarClientePaquete(dni);
         Base.close();
     }
+    /**
+     * Metoodo para buscar datos personales del cliente 
+     * @param dni dni del clientes a buscar
+     */
     public void buscarCliente (String dni){
         List<Cliente> abu = Cliente.findAll();
 		if(!abu.isEmpty()){
@@ -52,6 +72,10 @@ public class ConsultarViaje extends javax.swing.JFrame {
 			}
         }
     }
+    /**
+     * Metodo para buscar datos de fincha medica del cliente
+     * @param dni dni del cliente a buscar
+     */
     public void buscarFichaMedica (String dni){
         List<FichaMedica> ficha = FichaMedica.findAll();
 		if(!ficha.isEmpty()){
@@ -67,14 +91,20 @@ public class ConsultarViaje extends javax.swing.JFrame {
 			}
         }
     }
+    /**
+     * Metodo para buscar datos del paquete y atraccion
+     * del cliente 
+     * @param dniString dni del cliente a buscar
+     */
     public void buscarClientePaquete(String dniString){
+        //destino
         int dni = Integer.parseInt(dniString);
         ClientePaquete cliente = ClientePaquete.findFirst("dni = ?",dni);
         int id_paquete = Integer.parseInt(cliente.getIdPaquete()); 
         int id_cliente_paquete = Integer.parseInt(cliente.getId()); 
         PaqueteTuristico dest = PaqueteTuristico.findFirst("id = ?",id_paquete);
         jLabel23.setText(dest.getDestino());
-
+        //Atracciones
         List<AtraccionCliente> listAtra = AtraccionCliente.where("id_cliente_paquete = ?",id_cliente_paquete);
         AtraccionTuristica atraccion1 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(0).getIdAtraccion())); 
         jLabel33.setText(atraccion1.getNombre()); 
@@ -82,7 +112,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
         jLabel32.setText(atraccion2.getNombre()); 
         AtraccionTuristica atraccion3 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(2).getIdAtraccion())); 
         jLabel34.setText(atraccion3.getNombre()); 
-
+        //forma de pago efectivo
         List<Efectivo> pagoEfectivo = Efectivo.findAll();
 		if(!pagoEfectivo.isEmpty()){
             for(Efectivo i : pagoEfectivo){
@@ -100,6 +130,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
                 }
 			}
         }
+        //forma de pago efectivo
         List<PlanCuota> pagoCuota = PlanCuota.findAll();
 		if(!pagoCuota.isEmpty()){
             for(PlanCuota i : pagoCuota){
@@ -120,7 +151,12 @@ public class ConsultarViaje extends javax.swing.JFrame {
         }
 
     }
-
+    /**
+     * metodo que retorna el monto de la cuota
+     * del cliente
+     * @param nro_plan nro_plan de la cuota
+     * @return monto de la cuota
+     */
     public String montoCuota (String nro_plan){
         List<Cuota> pcuota = Cuota.findAll();
 		if(!pcuota.isEmpty()){
@@ -134,8 +170,11 @@ public class ConsultarViaje extends javax.swing.JFrame {
         return "";
     }
 
+    //--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
+    
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         setResizable(false);

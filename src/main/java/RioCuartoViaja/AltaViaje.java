@@ -3,16 +3,25 @@ import java.util.List;
 import org.javalite.activejdbc.*;
 import javax.swing.JOptionPane;
 import RioCuartoViaja.*;
-
+/**
+ * clase para agregar un nuevo cliente a la base de datos 
+ * @author Álvaro Cuesta
+ * 
+ */
 public class AltaViaje extends javax.swing.JFrame {
 
     /**
-     * Creates new form AltaViaje
+     * Constructor AltaViaje
      */
     public AltaViaje() {
         initComponents();
     }
 
+    /**
+     * Metodo que dice si un dni existe
+     * @param dni del cliente
+     * @return true si el dni pertenece algun clietne false lo contrario
+     */
     public boolean buscarDni (String dni){
         Base.open();
         boolean a = false;
@@ -28,69 +37,78 @@ public class AltaViaje extends javax.swing.JFrame {
         return a;
     }
 
-    public void altaClienteSinDatos(){
-        cargarDatosPersonales();
+    /**
+     * Metodo para cargar los datos de los clientes a la base de datos.
+     */
+    public void altaCliente(){
         Base.open();
+        cargarDatosPersonales();
         cargarFichaMedica();
         cargarClientePaquete();
         cargarAtraccionPaquete();
         cargarFormaPago();
         Base.close();
     }
-    /*public void altaClienteConDatos(){
-        Base.open();
-        cargarClientePaquete();
-        cargarAtraccionPaquete();
-        cargarFormaPago();
-        Base.close();
-    }*/
 
+    /**
+     * Metodo para cargar los datos personales del clientes
+    */
     public void cargarDatosPersonales(){
-        Base.open();
+        //datos insertados por el empleado
         int dni = Integer.parseInt(jTextField1.getText());
         String nombre = new String (jTextField2.getText());
         String apellido = new String (jTextField3.getText());
         String direccion = new String (jTextField5.getText());
         String telefono = new String (jTextField4.getText());
         String nombre_agrupacion = new String (jComboBox5.getSelectedItem().toString());
+        //inserto en la base
         Cliente nuevoCliente = new Cliente(dni,nombre,apellido,direccion,telefono,nombre_agrupacion);
-        nuevoCliente.saveIt();
-        Base.close();
+        nuevoCliente.insert();
     }
+
+    /**
+     * Metodo para cargar la ficha medica ala base de datos
+     */
     public void cargarFichaMedica(){
+        //datos insertados por el empelado
         int dni = Integer.parseInt(jTextField1.getText());
         String nombre_enfermedad = new String (jTextField6.getText());
         String es_cronica = new String (jTextField7.getText());
         String nombre_medicamento = new String (jTextField8.getText());
         String frecuencia = new String (jTextField9.getText());
         String medicamento_alergico = new String (jTextField10.getText());
-
+        //inserto en la base
         FichaMedica nuevaFicha = new FichaMedica(dni, nombre_enfermedad, es_cronica, nombre_medicamento, frecuencia, medicamento_alergico);
-        nuevaFicha.saveIt();
+        nuevaFicha.insert();
     }
 
+    /**
+     * Metodo para cargar el paquete elegido por el cliente (destino)
+     */
     public void cargarClientePaquete(){
-
         int dni = Integer.parseInt(jTextField1.getText());  
         String destino = jComboBox1.getSelectedItem().toString();
         PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
         int id_paquete = Integer.parseInt(dest.getId());
-        
+        //inserto en la base
         ClientePaquete nuevoClientePaquete = new ClientePaquete(dni, id_paquete);
         nuevoClientePaquete.saveIt();
     }
 
+    /**
+     * Metodo que para cargar las atraccioens elegidas por el cliente
+     */
     public void cargarAtraccionPaquete(){
-
-        String dni = jTextField1.getText(); 
+        //
+        String dni = new String (jTextField1.getText()); 
         String destino = jComboBox1.getSelectedItem().toString();
         PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
-        int id_paquete = Integer.parseInt(dest.getId());
+        String id_paquete = dest.getId();
         int id_cliente_paquete = 0;
         List<ClientePaquete> clientePaq = ClientePaquete.findAll();
 		if(!clientePaq.isEmpty()){
             for(ClientePaquete i : clientePaq){
-                if (i.getDni().equals(dni) && i.getIdPaquete().equals(Integer.toString(id_paquete))){
+                if (i.getDni().equals(dni) && i.getIdPaquete().equals(id_paquete)){
                     id_cliente_paquete =  Integer.parseInt(i.getId());
                 }
 			}
@@ -104,11 +122,11 @@ public class AltaViaje extends javax.swing.JFrame {
         List<AtraccionTuristica> atraCli1 = AtraccionTuristica.findAll();
 		if(!atraCli1.isEmpty()){
             for(AtraccionTuristica i : atraCli1){
-                if (i.getIdPaquete().equals(Integer.toString(id_paquete)) && i.getNombre().equals(nom_atrac1))
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac1))
                     id_atraccion1 =  Integer.parseInt(i.getId());
-                if (i.getIdPaquete().equals(Integer.toString(id_paquete)) && i.getNombre().equals(nom_atrac2))
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac2))
                     id_atraccion2 =  Integer.parseInt(i.getId());
-                if (i.getIdPaquete().equals(Integer.toString(id_paquete)) && i.getNombre().equals(nom_atrac3))
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac3))
                     id_atraccion3 =  Integer.parseInt(i.getId());
 			}
         }
@@ -119,7 +137,10 @@ public class AltaViaje extends javax.swing.JFrame {
         AtraccionCliente nuevaAtraccionCliente3 = new AtraccionCliente (id_cliente_paquete,id_atraccion3);
         nuevaAtraccionCliente3.saveIt();
     }
-
+    /**
+     * Metodo para saber que forma de pago eligio y llamar
+     * al metodo que corresponda 
+    */
     public void cargarFormaPago(){
         if (botonEfectivo.isSelected())
             cargarEfectivo();
@@ -127,8 +148,10 @@ public class AltaViaje extends javax.swing.JFrame {
             cargarCuotas();
     }
 
+    /**
+     * Metodo que cargar los datos de la forma de pago en efectivo
+     */
     public void cargarEfectivo(){
-
         String dni = new String (jTextField1.getText());
         String destino = jComboBox1.getSelectedItem().toString();
         PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
@@ -148,6 +171,9 @@ public class AltaViaje extends javax.swing.JFrame {
         nuevoEfectivo.saveIt();
     }
 
+    /**
+     * Metodo que carga los datos de la forma de pago en cuotas 
+     */
     public void cargarCuotas(){
         
         String dni = new String (jTextField1.getText());
@@ -184,6 +210,9 @@ public class AltaViaje extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Metodo para llenar el combobox con las opciones de destino.
+     */
     public void agregarItemComboBoxDestino(){
         Base.open();
         jComboBox1.addItem("");
@@ -196,6 +225,9 @@ public class AltaViaje extends javax.swing.JFrame {
         Base.close();
     }
 
+    /**
+     * Metodo para agregar las agrupaciones de jubilados al combobox
+     */
     public void agregarItemComboBoxAgrupacion(){
         Base.open();
         jComboBox5.addItem("");
@@ -208,6 +240,9 @@ public class AltaViaje extends javax.swing.JFrame {
         Base.close();
     }
     
+    /**
+     * Metodo para agregar las atracciones de cada destino al combobox
+     */
     public void agregarItemComboBoxAtraccion(){    
         Base.open();
         String destino = jComboBox1.getSelectedItem().toString();
@@ -238,11 +273,10 @@ public class AltaViaje extends javax.swing.JFrame {
         Base.close();
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    //-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -851,9 +885,9 @@ public class AltaViaje extends javax.swing.JFrame {
         else{
             String dni = new String (jTextField1.getText());
             if (buscarDni(dni))
-            JOptionPane.showMessageDialog(null, "DNI existente");
+                JOptionPane.showMessageDialog(null, "DNI existente");
             else
-                altaClienteSinDatos();
+                altaCliente();
         }  
     }
 
