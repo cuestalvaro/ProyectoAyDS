@@ -1,64 +1,70 @@
 package RioCuartoViaja;
-import org.javalite.activejdbc.Model;
 
-public class FichaMedica extends Model {
+import RioCuartoViaja.*;
+import org.javalite.activejdbc.*;
+import static org.junit.Assert.*;
+import org.junit.*; 
 
-    public FichaMedica() {}
+public class FichaMedicaTest {
 
-    public FichaMedica(int dni, String nombre_enfermedad,String es_cronica,String nombre_medicamento,String frecuencia,String medicamento_alergico) {
-        set("dni",dni,"nombre_enfermedad",nombre_enfermedad,"es_cronica",es_cronica,"nombre_medicamento",nombre_medicamento,"frecuencia",frecuencia,"medicamento_alergico",medicamento_alergico);
-    }
+    @BeforeClass
+	public static void before(){
+		Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/RioCuartoViaja_test", "root", "root");
+		System.out.println("FichaMedicaTest: ");
+		Base.openTransaction();
+	}
 
-    public String getDni(){
-        return getString("dni");
-    }
-    
-    public void setDni(int dni){
-        set("dni",dni);
-    }
+	@AfterClass
+	public static void after(){
+		System.out.println("FichaMedicaTest end");
+		Base.rollbackTransaction();
+		Base.close();
+	}
+	
+	@Test
+	public void addFicha(){
+        FichaMedica ficha = new FichaMedica();
+        
+		ficha.setDni(10226554);
+        ficha.setNombreEnfermedad("Loquitis");
+        ficha.setEsCronica("si");
+        ficha.setNombreMedicamento("ibuprofeno");
+        ficha.setFrecuencia("diaria");
+        ficha.setMedicamentoAlergico("Penicilina");
 
-    public String getNombreEnfermedad(){
-        return getString("nombre_enfermedad");
-    }
+        assertEquals("10226554",ficha.getDni());
+        assertEquals("Loquitis",ficha.getNombreEnfermedad());
+        assertEquals("si",ficha.getEsCronica());
+        assertEquals("ibuprofeno",ficha.getNombreMedicamento());
+        assertEquals("diaria",ficha.getFrecuencia());
+        assertEquals("Penicilina",ficha.getMedicamentoAlergico());
+	}
 
-    public void setNombreEnfermedad(String nombre_enfermedad){
-        set("nombre_enfermedad",nombre_enfermedad);
-    }
+	@Test
+	public void addFicha2(){
 
-    public String getEsCronica(){
-        return getString("es_cronica");
-    }
+		FichaMedica ficha = new FichaMedica(10226554,"Loquitis","si","ibuprofeno","diaria","Penicilina");
+		
+        assertEquals("10226554",ficha.getDni());
+        assertEquals("Loquitis",ficha.getNombreEnfermedad());
+        assertEquals("si",ficha.getEsCronica());
+        assertEquals("ibuprofeno",ficha.getNombreMedicamento());
+        assertEquals("diaria",ficha.getFrecuencia());
+        assertEquals("Penicilina",ficha.getMedicamentoAlergico());
+	}
 
-    public void setEsCronica(String es_cronica){
-        set("es_cronica",es_cronica);
-    }
+	@Test
+	public void setFicha(){
 
-    public String getNombreMedicamento(){
-        return getString("nombre_medicamento");
-    }
+		FichaMedica ficha = new FichaMedica(10226554,"Loquitis","si","ibuprofeno","diaria","Penicilina");
+        
+        ficha.setFichaMedica(10226554,"Loquitis","no","paracetamol","diaria","aspirineta");
 
-    public void setNombreMedicamento(String nombre_medicamento){
-        set("nombre_medicamento",nombre_medicamento);
-    }
-
-    public String getFrecuencia(){
-        return getString("frecuencia");
-    }
-
-    public void setFrecuencia(String frecuencia){
-        set("frecuencia",frecuencia);
-    }
-
-    public String getMedicamentoAlergico(){
-        return getString("medicamento_alergico");
-    }
-
-    public void setMedicamentoAlergico(String medicamento_alergico){
-        set("medicamento_alergico",medicamento_alergico);
-    }
-
-    public void setFichaMedica(int dni, String nombre_enfermedad,String es_cronica,String nombre_medicamento,String frecuencia,String medicamento_alergico) {
-        set("dni",dni,"nombre_enfermedad",nombre_enfermedad,"es_cronica",es_cronica,"nombre_medicamento",nombre_medicamento,"frecuencia",frecuencia,"medicamento_alergico",medicamento_alergico);
-    }
-
+        assertEquals("10226554",ficha.getDni());
+        assertEquals("Loquitis",ficha.getNombreEnfermedad());
+        assertEquals("no",ficha.getEsCronica());
+        assertEquals("paracetamol",ficha.getNombreMedicamento());
+        assertEquals("diaria",ficha.getFrecuencia());
+        assertEquals("aspirineta",ficha.getMedicamentoAlergico());
+	}
 }

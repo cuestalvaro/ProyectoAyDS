@@ -3,6 +3,7 @@ package RioCuartoViaja;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import RioCuartoViaja.*;
 
 /**
  * Unit test for simple App.

@@ -1,63 +1,70 @@
 package RioCuartoViaja;
-import org.javalite.activejdbc.Model;
 
-public class Cliente extends Model {
+import RioCuartoViaja.*;
+import org.javalite.activejdbc.*;
+import static org.junit.Assert.*;
+import org.junit.*; 
 
-    public Cliente() {}
 
-    public Cliente(int dni, String nombre, String apellido,String direccion, String telefono,String nombre_agrupacion) {
-        set("dni",dni,"nombre",nombre,"apellido",apellido,"direccion",direccion, "telefono",telefono,"nombre_agrupacion",nombre_agrupacion);
-    }
+public class ClienteTest {
 
-    public String getDni(){
-        return getString("dni");
-    }
+    @BeforeClass
+	public static void before(){
+		Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/RioCuartoViaja_test", "root", "root");
+		System.out.println("ClienteTest: ");
+		Base.openTransaction();
+	}
 
-    public void setDni(int dni){
-        set("dni",dni);
-    }
+	@AfterClass
+	public static void after(){
+		System.out.println("ClienteTest end");
+		Base.rollbackTransaction();
+		Base.close();
+	}
+	
+	@Test
+	public void addCliente(){
+		Cliente nuevoCliente = new Cliente();
+		nuevoCliente.setNombre("Jorge");
+        nuevoCliente.setApellido("Suarez");
+        nuevoCliente.setDni(37875866);
+        nuevoCliente.setDireccion("Av. Ranqueles 4");
+        nuevoCliente.setTelefono("358240654");
+        nuevoCliente.setNombreAgrupacion("Los nonos");
 
-    public String getNombre(){
-        return getString("nombre");
-    }
+        assertEquals("Jorge",nuevoCliente.getNombre());
+        assertEquals("Suarez",nuevoCliente.getApellido());
+        assertEquals("37875866",nuevoCliente.getDni());
+        assertEquals("Av. Ranqueles 4",nuevoCliente.getDireccion());
+        assertEquals("358240654",nuevoCliente.getTelefono());
+        assertEquals("Los nonos",nuevoCliente.getNombreAgrupacion());
+	}
 
-    public void setNombre(String nombre){
-        set("nombre",nombre);
-    }
+	@Test
+	public void addCliente2(){
 
-    public String getApellido(){
-        return getString("apellido");
-    }
+		Cliente nuevoCliente = new Cliente(37875866,"Jorge","Suarez","Av. Ranqueles 4","358240654","Los nonos");
+		
+        assertEquals("Jorge",nuevoCliente.getNombre());
+        assertEquals("Suarez",nuevoCliente.getApellido());
+        assertEquals("37875866",nuevoCliente.getDni());
+        assertEquals("Av. Ranqueles 4",nuevoCliente.getDireccion());
+        assertEquals("358240654",nuevoCliente.getTelefono());
+        assertEquals("Los nonos",nuevoCliente.getNombreAgrupacion());
+	}
 
-    public void setApellido(String apellido){
-        set("apellido",apellido);
-    }
-    
-    public String getDireccion(){
-        return getString("direccion");
-    }
+	@Test
+	public void setCliente(){
 
-    public void setDireccion(String direccion){
-        set("direccion",direccion);
-    }
+		Cliente nuevoCliente = new Cliente(37875866,"Jorge","Suarez","Av. Ranqueles 4","358240654","Los nonos");
+        
+        nuevoCliente.setCliente(37875866, "Jorge","Suarez","Av. Italia 5","358240656","Vivir");
 
-    public String getTelefono(){
-        return getString("telefono");
-    }
-
-    public void setTelefono(String telefono){
-        set("telefono",telefono);
-    }
-
-    public String getNombreAgrupacion(){
-        return getString("nombre_agrupacion");
-    }
-
-    public void setNombreAgrupacion(String nombre_agrupacion){
-        set("nombre_agrupacion",nombre_agrupacion);
-    }
-
-    public void setCliente(int dni, String nombre, String apellido,String direccion, String telefono,String nombre_agrupacion) {
-        set("dni",dni,"nombre",nombre,"apellido",apellido,"direccion",direccion, "telefono",telefono,"nombre_agrupacion",nombre_agrupacion);
-    }
+        assertEquals("Jorge",nuevoCliente.getNombre());
+        assertEquals("Suarez",nuevoCliente.getApellido());
+        assertEquals("37875866",nuevoCliente.getDni());
+        assertEquals("Av. Italia 5",nuevoCliente.getDireccion());
+        assertEquals("358240656",nuevoCliente.getTelefono());
+        assertEquals("Vivir",nuevoCliente.getNombreAgrupacion());
+	}
 }
