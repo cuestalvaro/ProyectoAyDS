@@ -40,16 +40,16 @@ insert into clientes (dni,nombre,apellido,direccion,telefono,nombre_agrupacion) 
 insert into clientes (dni,nombre,apellido,direccion,telefono,nombre_agrupacion) values (18885644, "Alcira", "Ferro", "Alvear 887","3584455856","Centro de Jubilados");
 insert into clientes (dni,nombre,apellido,direccion,telefono,nombre_agrupacion) values (14556987, "Felipe", "Garcia", "Cabrera 1698","35844632366","Centro de Jubilados");
 
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (21345987, "Diabetes", "si","med1","diaria","medAl1");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (25476234, "Diabetes", "si","med2","semanal","medAl2");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (22752405, "Diabetes", "si","med3","diaria","medAl3");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (15256352, "Diabetes", "si","med4","semanal","medAl4");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (10225665, "Diabetes", "si","med5","diaria","medAl5");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (52256654, "Diabetes", "si","med6","diaria","medAl6");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (10226554, "Diabetes", "si","med7","diaria","medAl7");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (16223665, "Diabetes", "si","med8","diaria","medAl8");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (18885644, "Diabetes", "si","med9","diaria","medAl9");
-insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (14556987, "Diabetes", "si","med10","diaria","medAl10");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (21345987, "Diabetes", "si","Ibuprofeno","diaria","Penicilina");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (25476234, "Hipertension", "no","Paracetamol","cada 4 hs.","No tiene");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (22752405, "Parkinson", "si","Amoxicilina","diaria","No tiene");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (15256352, "No tiene", "no","Desloratadina","cada 8 hs.","No tiene");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (10225665, "Diabetes", "si","Acitretina","cada 12 hs.","Penicilina");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (52256654, "No tiene", "no","No toma","","No tiene");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (10226554, "No tiene", "no","No toma","","No tiene");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (16223665, "Parkison", "si","Ibuprofeno","diaria","No tiene");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (18885644, "Diabetes", "si","Amoxicilina","cada 12 hs.","No tiene");
+insert into ficha_medicas (dni,nombre_enfermedad,es_cronica,nombre_medicamento,frecuencia,medicamento_alergico) values (14556987, "Alzheimer", "si","Aspirina","cada 4 hs.","No tiene");
 
 insert into traslados (id,costo,duracion,distancia) values (NULL,2569.40,16,1300);
 insert into traslados (id,costo,duracion,distancia) values (NULL,1799.99,9,723.4);
@@ -133,14 +133,36 @@ insert into efectivos (id_paquete,monto_total_descuento,fecha) values (9,6823.65
 insert into efectivos (id_paquete,monto_total_descuento,fecha) values (10,9564.99,"2019-07-26");
 
 insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (3,NULL,12,"2019-07-02","2020-07-02");
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (4,NULL,18,"2019-07-06","2021-1-06");
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (5,NULL,6,"2019-06-29","2019-12-29");
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (6,NULL,12,"2019-08-15","2020-08-15");
-insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (7,NULL,12,"2019-08-11","2020-08-11");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (4,NULL,2,"2019-07-06","2019-08-06");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (5,NULL,3,"2019-06-29","2019-09-29");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (6,NULL,6,"2019-08-15","2020-01-15");
+insert into plan_cuotas (id_paquete,nro_plan,cant_cuotas,fecha_inc,fecha_fin) values (7,NULL,4,"2019-08-11","2019-12-11");
 
-insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2019-07-11","paga");
-insert into cuotas (nro_plan,monto,fecha,estado) values (2,320.50,"2019-08-15","por vencer");
-insert into cuotas (nro_plan,monto,fecha,estado) values (3,998.10,"2019-07-06","paga");
-insert into cuotas (nro_plan,monto,fecha,estado) values (4,466.98,"2019-05-28","vencida");
-insert into cuotas (nro_plan,monto,fecha,estado) values (5,466.98,"2019-06-09","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2019-07-02","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2019-08-02","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2019-09-02","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2019-10-02","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2019-11-02","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2019-12-02","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2020-01-02","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2020-02-02","por vencer");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2020-03-02","por vencer");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2020-04-02","por vencer");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2020-05-02","por vencer");
+insert into cuotas (nro_plan,monto,fecha,estado) values (1,466.98,"2020-06-02","por vencer");
+insert into cuotas (nro_plan,monto,fecha,estado) values (2,2320.50,"2019-07-06","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (2,2320.50,"2019-08-15","por vencer");
+insert into cuotas (nro_plan,monto,fecha,estado) values (3,998.10,"2019-06-29","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (3,998.10,"2019-07-29","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (3,998.10,"2019-08-29","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (4,466.98,"2019-08-15","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (4,466.98,"2019-09-15","vencida");
+insert into cuotas (nro_plan,monto,fecha,estado) values (4,466.98,"2019-10-15","vencida");
+insert into cuotas (nro_plan,monto,fecha,estado) values (4,466.98,"2019-11-15","vencida");
+insert into cuotas (nro_plan,monto,fecha,estado) values (4,466.98,"2019-12-15","vencida");
+insert into cuotas (nro_plan,monto,fecha,estado) values (4,466.98,"2020-01-15","vencida");
+insert into cuotas (nro_plan,monto,fecha,estado) values (5,466.98,"2019-08-11","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (5,466.98,"2019-09-11","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (5,466.98,"2019-10-11","paga");
+insert into cuotas (nro_plan,monto,fecha,estado) values (5,466.98,"2019-11-11","paga");
 
