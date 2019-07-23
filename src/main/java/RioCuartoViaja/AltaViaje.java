@@ -20,7 +20,7 @@ public class AltaViaje extends javax.swing.JFrame {
     /**
      * Metodo que dice si un dni existe
      * @param dni del cliente
-     * @return true si el dni pertenece algun clietne false lo contrario
+     * @return true si el dni pertenece algun cliente false lo contrario
      */
     public boolean buscarDni (String dni){
         Base.open();
@@ -271,6 +271,25 @@ public class AltaViaje extends javax.swing.JFrame {
             }
         }
         Base.close();
+    }
+     /**
+     * Metodo para limpiar los textos
+     */
+    public void limpiarText(){
+        jTextField1.setText("");
+        jTextField2.setText(""); 
+        jTextField3.setText(""); 
+        jTextField4.setText(""); 
+        jTextField5.setText(""); 
+        jTextField6.setText(""); 
+        jTextField7.setText(""); 
+        jTextField8.setText("");
+        jTextField9.setText(""); 
+        jTextField10.setText(""); 
+        jTextField11.setText(""); 
+        jTextField12.setText(""); 
+        jTextField13.setText(""); 
+        jTextField14.setText(""); 
     }
 
     //-----------------------------------------------------------------------------------
@@ -888,6 +907,8 @@ public class AltaViaje extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "DNI existente");
             else
                 altaCliente();
+                JOptionPane.showMessageDialog(null, "Cliente Agregado");
+                limpiarText();
         }  
     }
 
