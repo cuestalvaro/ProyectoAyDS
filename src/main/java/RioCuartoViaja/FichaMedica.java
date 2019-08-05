@@ -1,6 +1,12 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-
+import org.javalite.activejdbc.annotations.IdName;
+/**
+ * Clase que modela la tabla ficha_medicas de la base datos RioCuartoViaja
+ * que representa la ficha medica de los clientes
+ * @author Álvaor Cuesta
+ */
+@IdName("dni")
 public class FichaMedica extends Model {
 
     public FichaMedica() {}

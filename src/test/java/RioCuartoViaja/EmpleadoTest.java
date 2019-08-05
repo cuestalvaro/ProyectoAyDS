@@ -1,64 +1,33 @@
 package RioCuartoViaja;
-import org.javalite.activejdbc.Model;
 
-public class Empleado extends Model {
+import RioCuartoViaja.*;
+import org.javalite.activejdbc.*;
+import static org.junit.Assert.*;
+import org.junit.*; 
 
-    public Empleado() {}
+public class EmpleadoTest{
 
-    public Empleado(int dni, String nombre, String apellido,String loc_origen, String telefono,String pass) {
-        set("dni",dni,"nombre",nombre,"apellido",apellido,"loc_origen",loc_origen,"telefono",telefono,"pass",pass);
+    @BeforeClass
+	public static void before(){
+		Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/RioCuartoViaja_test", "root", "root");
+		System.out.println("EmpeladoTest: ");
+		Base.openTransaction();
+	}
+
+	@AfterClass
+	public static void after(){
+		System.out.println("EmpleadoTest end");
+		Base.rollbackTransaction();
+		Base.close();
+	}
+
+	@Test
+	public void loginEmpelado(){
+
+		Empleado nuevoEmpelado = new Empleado(37875300,"Lucas","Pratto","Rio Cuarto","358240654","4321");
+
+        assertEquals("37875300",nuevoEmpelado.getDni());
+        assertEquals("4321",nuevoEmpelado.getPass());
+        
     }
-
-    public String getDni(){
-        return getString("dni");
-    }
-    
-    public void setDni(int dni){
-        set("dni",dni);
-    }
-
-    public String getNombre(){
-        return getString("nombre");
-    }
-
-    public void setNombre(String nombre){
-        set("nombre",nombre);
-    }
-
-    public String getApellido(){
-        return getString("apellido");
-    }
-
-    public void setApellido(String apellido){
-        set("apellido",apellido);
-    }
-
-    public String getLocalidadOrigen(){
-        return getString("loc_origen");
-    }
-
-    public void setLocalidadOrigen(String loc_origen){ 
-        set("loc_origen",loc_origen);
-    }
-
-    public String getTelefono(){
-        return getString("telefono");
-    }
-
-    public void setTelefono(String telefono){
-        set("telefono",telefono);
-    }
-
-    public String getPass(){
-        return getString("pass");
-    }
-
-    public void setPass(String pass){
-        set("pass",pass);
-    }
-
-    public void setEmpleado(int dni, String nombre, String apellido,String loc_origen, String telefono,String pass) {
-        set("dni",dni,"nombre",nombre,"apellido",apellido,"loc_origen",loc_origen,"telefono",telefono,"pass",pass);
-    }
-
 }

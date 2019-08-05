@@ -1,6 +1,10 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-
+/**
+ * Clase que modela la tabla empleados de la base datos RioCuartoViaja
+ * que representa un empleado de la empresa
+ * @author Álvaor Cuesta
+ */
 public class Empleado extends Model {
 
     public Empleado() {}

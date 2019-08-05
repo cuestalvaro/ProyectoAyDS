@@ -1,20 +1,24 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-
+/**
+ * Clase que modela la tabla traslados de la base datos RioCuartoViaja
+ * que representa el traslado hacia algun destino
+ * @author Álvaro Cuesta
+ */
 public class Traslado extends Model {
 
     public Traslado() {}
 
-    public Traslado(int id_paquete,float costo,float duracion,float distancia) {
-        set("id_paquete",id_paquete,"costo",costo,"duracion",duracion,"distancia",distancia);
+    public Traslado(int id,float costo,float duracion,float distancia) {
+        set("id",id,"costo",costo,"duracion",duracion,"distancia",distancia);
     }
 
-    public String getIdPaquete(){
-        return getString("id_paquete");
+    public String getId(){
+        return getString("id");
     }
 
-    public void setIdPaquete(int id_paquete){
-        set("id_paquete",id_paquete);
+    public void setId(int id){
+        set("id",id);
     }
 
     public String getCosto(){
@@ -41,8 +45,8 @@ public class Traslado extends Model {
         set("distancia",distancia);
     }
 
-    public void setTraslado(String id_paquete,float costo,float duracion,float distancia) {
-        set("id_paquete",id_paquete,"costo",costo,"duracion",duracion,"distancia",distancia);
+    public void setTraslado(int id,float costo,float duracion,float distancia) {
+        set("id",id,"costo",costo,"duracion",duracion,"distancia",distancia);
     }
 
 }

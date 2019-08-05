@@ -1,6 +1,10 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-
+/**
+ * Clase que modela la tabla agrupacion_jubilados de la base datos RioCuartoViaja
+ * que representa las agrupaciones de los jubilados
+ * @author Álvaor Cuesta
+ */
 public class AgrupacionJubilado extends Model {
 
     public AgrupacionJubilado() {}

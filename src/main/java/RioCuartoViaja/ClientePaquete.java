@@ -1,12 +1,16 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-
+/**
+ * Clase que modela la tabla cliente_paquetes de la base datos RioCuartoViaja
+ * que representa el paquete que tiene cada cliente
+ * @author Álvaro Cuesta
+ */
 public class ClientePaquete extends Model {
 
     public ClientePaquete() {}
 
-    public ClientePaquete(int id,int dni, int id_paquete,int id_atraccion) {
-        set("id",id,"dni",dni,"id_paquete",id_paquete,"id_atraccion",id_atraccion);
+    public ClientePaquete(int dni, int id_paquete) {
+        set("dni",dni,"id_paquete",id_paquete);
     }
 
     public String getId(){
@@ -33,15 +37,7 @@ public class ClientePaquete extends Model {
         set("id_paquete",id_paquete);
     }
 
-    public String getIdAtraccion(){
-        return getString("id_atraccion");
-    }
-
-    public void setIdAtraccion(int id_atraccion){
-        set("id_atraccion",id_atraccion);
-    }
-
-    public void setClientePaquete(int id,int dni, int id_paquete,int id_atraccion) {
-        set("id",id,"dni",dni,"id_paquete",id_paquete,"id_atraccion",id_atraccion);
+    public void setClientePaquete(int dni, int id_paquete) {
+        set("dni",dni,"id_paquete",id_paquete);
     }
 }

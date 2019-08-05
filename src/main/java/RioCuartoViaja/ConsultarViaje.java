@@ -5,25 +5,26 @@ import java.util.List;
 import org.javalite.activejdbc.*;
 import javax.swing.JOptionPane;
 import RioCuartoViaja.*;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
- * @author alvaro
+ * clase para buscar y consultar datos de
+ * los clientes que estan en la base de datos 
+ * @author Álvaro Cuesta
+ * 
  */
 public class ConsultarViaje extends javax.swing.JFrame {
 
     /**
-     * Creates new form ConsultarViaje
+     * Constructor de ConsultarViaje
      */
     public ConsultarViaje() {
         initComponents();
     }
 
+    /**
+     * Metodo que dice si un dni existe
+     * @param dni del cliente
+     * @return true si el dni pertenece algun clietne false lo contrario
+     */
     public boolean buscarDni (String dni){
         Base.open();
         boolean a = false;
@@ -38,13 +39,23 @@ public class ConsultarViaje extends javax.swing.JFrame {
         Base.close();
         return a;
     }
+
+    /**
+     * Metodo para buscar los datos de los clientes 
+     * y mostrarlo para modificarlos
+     * @param dni dni de la persona a buscar
+     */
     public void buscarDatos (String dni){
         Base.open();
         buscarCliente(dni);
         buscarFichaMedica(dni);
-        buscarPaqueteCliente(dni);
+        buscarClientePaquete(dni);
         Base.close();
     }
+    /**
+     * Metoodo para buscar datos personales del cliente 
+     * @param dni dni del clientes a buscar
+     */
     public void buscarCliente (String dni){
         List<Cliente> abu = Cliente.findAll();
 		if(!abu.isEmpty()){
@@ -61,6 +72,10 @@ public class ConsultarViaje extends javax.swing.JFrame {
 			}
         }
     }
+    /**
+     * Metodo para buscar datos de fincha medica del cliente
+     * @param dni dni del cliente a buscar
+     */
     public void buscarFichaMedica (String dni){
         List<FichaMedica> ficha = FichaMedica.findAll();
 		if(!ficha.isEmpty()){
@@ -76,89 +91,90 @@ public class ConsultarViaje extends javax.swing.JFrame {
 			}
         }
     }
-    public void buscarPaqueteCliente (String dni){
-        List<String> listAtraccion = new LinkedList<String>();
-        List<ClientePaquete> paquete = ClientePaquete.findAll();
-		if(!paquete.isEmpty()){
-            for(ClientePaquete i : paquete){
-                if (i.getDni().equals(dni)){
-                    buscarPaquete(i.getIdPaquete());
-                    buscarPago(i.getId());
-                    listAtraccion = buscarAtraccion(i.getIdPaquete());
-                    if (listAtraccion.size()==1){
-                        jLabel33.setText(listAtraccion.get(0));
-                    }
-                    else if (listAtraccion.size()==2){
-                        jLabel33.setText(listAtraccion.get(0));
-                        jLabel32.setText(listAtraccion.get(1));
-                    }
-                    else if (listAtraccion.size()==3){
-                        jLabel33.setText(listAtraccion.get(0));
-                        jLabel32.setText(listAtraccion.get(1));
-                        jLabel34.setText(listAtraccion.get(2));
-                    }
-                    break;
-                }
-			}
-        }
-    }
-    public void buscarPago (String id_pago){
+    /**
+     * Metodo para buscar datos del paquete y atraccion
+     * del cliente 
+     * @param dniString dni del cliente a buscar
+     */
+    public void buscarClientePaquete(String dniString){
+        //destino
+        int dni = Integer.parseInt(dniString);
+        ClientePaquete cliente = ClientePaquete.findFirst("dni = ?",dni);
+        int id_paquete = Integer.parseInt(cliente.getIdPaquete()); 
+        int id_cliente_paquete = Integer.parseInt(cliente.getId()); 
+        PaqueteTuristico dest = PaqueteTuristico.findFirst("id = ?",id_paquete);
+        jLabel23.setText(dest.getDestino());
+        //Atracciones
+        List<AtraccionCliente> listAtra = AtraccionCliente.where("id_cliente_paquete = ?",id_cliente_paquete);
+        AtraccionTuristica atraccion1 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(0).getIdAtraccion())); 
+        jLabel33.setText(atraccion1.getNombre()); 
+        AtraccionTuristica atraccion2 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(1).getIdAtraccion())); 
+        jLabel32.setText(atraccion2.getNombre()); 
+        AtraccionTuristica atraccion3 = AtraccionTuristica.findFirst("id = ?",Integer.parseInt(listAtra.get(2).getIdAtraccion())); 
+        jLabel34.setText(atraccion3.getNombre()); 
+        //forma de pago efectivo
         List<Efectivo> pagoEfectivo = Efectivo.findAll();
 		if(!pagoEfectivo.isEmpty()){
             for(Efectivo i : pagoEfectivo){
-                if (i.getIdPago().equals(id_pago)){
+                if (i.getIdPaquete().equals(Integer.toString(id_cliente_paquete))){
                     jLabel20.setText("Efectivo");
                     jLabel43.setText("$"+i.getMontoDescuento());
                     jLabel37.setText("Fecha: "+i.getFecha());
+                    jLabel22.setText("");
+                    jLabel40.setText("");
+                    jLabel45.setText("");
+                    jLabel35.setText("");
+                    jLabel41.setText("");
+                    jLabel44.setText("");
                     break;
                 }
 			}
         }
+        //forma de pago efectivo
         List<PlanCuota> pagoCuota = PlanCuota.findAll();
 		if(!pagoCuota.isEmpty()){
             for(PlanCuota i : pagoCuota){
-                if (i.getIdPago().equals(id_pago)){
+                if (i.getIdPaquete().equals(Integer.toString(id_cliente_paquete))){
+                    jLabel43.setText(montoCuota(i.getNroPlan()));
                     jLabel20.setText("Cuotas");
-                    jLabel38.setText(i.getCantCoutas());
+                    jLabel42.setText("Monto por Cuota:");
+                    jLabel35.setText(i.getCantCoutas());
                     jLabel41.setText(i.getFechaInc());
                     jLabel44.setText(i.getFechaFin());
+                    jLabel22.setText("Cant.Cuotas:");
+                    jLabel40.setText("Fecha inc.:");
+                    jLabel45.setText("Fecha Fin.:");
+                    jLabel37.setText("(Si la forma de pago es en cuotas)");
                     break;
                 }
 			}
         }
-    }
 
-    public void buscarPaquete (String id_paquete){
-        List<PaqueteTuristico> paquete = PaqueteTuristico.findAll();
-		if(!paquete.isEmpty()){
-            for(PaqueteTuristico i : paquete){
-                if (i.getId().equals(id_paquete)){
-                    jLabel23.setText(i.getDestino());
-                    break;
-                }
-			}
-        }
     }
-    public List<String> buscarAtraccion (String id_paquete){    
-        List<AtraccionTuristica> atraccion = AtraccionTuristica.findAll();
-        List<String> atracc = new LinkedList<String>();
-        if(!atraccion.isEmpty()){
-            for(AtraccionTuristica i : atraccion){
-                if (i.getIdPaquete().equals(id_paquete)){
-                        atracc.add(i.getNombre());
-                }
-			}
-        }
-        return atracc;
-    }
-
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * metodo que retorna el monto de la cuota
+     * del cliente
+     * @param nro_plan nro_plan de la cuota
+     * @return monto de la cuota
      */
+    public String montoCuota (String nro_plan){
+        List<Cuota> pcuota = Cuota.findAll();
+		if(!pcuota.isEmpty()){
+            for(Cuota i : pcuota){
+                if (i.getNroPlan().equals(nro_plan)){
+                    return i.getMonto();
+                }
+
+            }
+        }
+        return "";
+    }
+
+    //--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
+    
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         setResizable(false);
@@ -205,9 +221,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
-        jLabel38 = new javax.swing.JLabel();
         jLabel39 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
@@ -259,42 +273,33 @@ public class ConsultarViaje extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(76, 76, 76));
 
-        jLabel6.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(1, 1, 1));
         jLabel6.setText("Nombre: ");
 
-        jLabel7.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(20, 2, 2));
         jLabel7.setText("Apellido:");
 
-        jLabel8.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(1, 1, 1));
         jLabel8.setText("DNI:");
 
-        jLabel9.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(1, 1, 1));
         jLabel9.setText("Dirección:");
 
-        jLabel10.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(1, 1, 1));
         jLabel10.setText("Telefono:");
 
-        jLabel16.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(1, 1, 1));
         jLabel16.setText("Agrupación:");
 
-        jLabel12.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(1, 1, 1));
         jLabel12.setText("Enfermedad:");
 
         jLabel13.setForeground(new java.awt.Color(1, 1, 1));
         jLabel13.setText("¿ Es cronica ?:");
 
-        jLabel14.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(1, 1, 1));
         jLabel14.setText("Medicación:");
 
-        jLabel15.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(1, 1, 1));
         jLabel15.setText("Frecuencia:");
 
@@ -493,7 +498,6 @@ public class ConsultarViaje extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(76, 76, 76));
 
-        jLabel19.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(1, 1, 1));
         jLabel19.setText("Destino:");
 
@@ -501,13 +505,11 @@ public class ConsultarViaje extends javax.swing.JFrame {
         jLabel20.setForeground(new java.awt.Color(4, 2, 2));
         jLabel20.setText("");
 
-        jLabel21.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(1, 1, 1));
         jLabel21.setText("Atracciones:");
 
-        jLabel22.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(1, 1, 1));
-        jLabel22.setText("(Si la forma de pago es en cuotas)");
+        jLabel22.setText("Cant.Cuotas:");
 
         jLabel23.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(4, 2, 2));
@@ -529,23 +531,12 @@ public class ConsultarViaje extends javax.swing.JFrame {
         jLabel35.setForeground(new java.awt.Color(1, 1, 1));
         jLabel35.setText("");
 
-        jLabel36.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
-        jLabel36.setForeground(new java.awt.Color(1, 1, 1));
-        jLabel36.setText("Cant. Cuotas:");
-
-        jLabel37.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(1, 1, 1));
-        jLabel37.setText("Fecha");
+        jLabel37.setText("(Si la forma de pago es en cuotas)");
 
-        jLabel38.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
-        jLabel38.setForeground(new java.awt.Color(1, 1, 1));
-        jLabel38.setText("");
-
-        jLabel39.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel39.setForeground(new java.awt.Color(1, 1, 1));
-        jLabel39.setText("Forma Pago:");
+        jLabel39.setText("Forma pago:");
 
-        jLabel42.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel42.setForeground(new java.awt.Color(1, 1, 1));
         jLabel42.setText("Monto:");
 
@@ -553,7 +544,6 @@ public class ConsultarViaje extends javax.swing.JFrame {
         jLabel43.setForeground(new java.awt.Color(1, 1, 1));
         jLabel43.setText("");
 
-        jLabel40.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel40.setForeground(new java.awt.Color(1, 1, 1));
         jLabel40.setText("Fecha inc.:");
 
@@ -565,7 +555,6 @@ public class ConsultarViaje extends javax.swing.JFrame {
         jLabel44.setForeground(new java.awt.Color(1, 1, 1));
         jLabel44.setText("");
 
-        jLabel45.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel45.setForeground(new java.awt.Color(1, 1, 1));
         jLabel45.setText("Fecha Fin.:");
 
@@ -578,46 +567,41 @@ public class ConsultarViaje extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel32)
+                                    .addComponent(jLabel33)))
                             .addComponent(jLabel37)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel39)
-                                    .addComponent(jLabel22))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel35))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel36)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel38))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel40)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel41)))
+                                .addGap(135, 135, 135)
+                                .addComponent(jLabel34)))
                         .addContainerGap(39, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(jLabel23))
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel21)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel32)
-                                    .addComponent(jLabel33)
-                                    .addComponent(jLabel34)))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(132, 132, 132)
+                                .addComponent(jLabel39)
+                                .addGap(36, 36, 36)
                                 .addComponent(jLabel20))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel42)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel43))
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel45)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel22)
+                                    .addComponent(jLabel45))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel44)))
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel44)
+                                    .addComponent(jLabel41)
+                                    .addComponent(jLabel35))))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel5Layout.setVerticalGroup(
@@ -631,38 +615,35 @@ public class ConsultarViaje extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(jLabel33))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel32)
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel34)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel42)
-                            .addComponent(jLabel43))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel37))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
                     .addComponent(jLabel39))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel22)
-                    .addComponent(jLabel35))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel36)
-                    .addComponent(jLabel38))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel41)
-                    .addComponent(jLabel40))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel42)
+                    .addComponent(jLabel43))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel44)
-                    .addComponent(jLabel45))
-                .addContainerGap(21, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel37)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel35)
+                            .addComponent(jLabel22))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel41)
+                            .addComponent(jLabel40))
+                        .addGap(37, 37, 37))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel45)
+                        .addComponent(jLabel44)))
+                .addContainerGap())
         );
 
         jButton2.setBackground(new java.awt.Color(29, 134, 21));
@@ -693,9 +674,9 @@ public class ConsultarViaje extends javax.swing.JFrame {
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(132, 132, 132))))
+                        .addGap(140, 140, 140))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -705,12 +686,13 @@ public class ConsultarViaje extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 6, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -731,7 +713,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(425, Short.MAX_VALUE))
+                .addContainerGap(435, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addGap(0, 108, Short.MAX_VALUE)
@@ -752,7 +734,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
         );
 
         pack();
-    }
+    }// END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String dni = new String (jTextField1.getText());
@@ -777,11 +759,6 @@ public class ConsultarViaje extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -840,9 +817,7 @@ public class ConsultarViaje extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;

@@ -1,6 +1,11 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-
+/**
+ * Clase que modela la tabla atraccion_turisticas de la base datos RioCuartoViaja
+ * que representan las atraccioens turisticas que tiene disponible
+ * cada destino
+ * @author Álvaro Cuesta
+ */
 public class AtraccionTuristica extends Model {
 
     public AtraccionTuristica() {}

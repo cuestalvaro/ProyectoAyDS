@@ -1,6 +1,10 @@
 package RioCuartoViaja;
 import org.javalite.activejdbc.Model;
-
+/**
+ * Clase que modela la tabla cuotas de la base datos RioCuartoViaja
+ * que representa una cuota de la forma de pago plan_cuotas
+ * @author Álvaor Cuesta
+ */
 public class Cuota extends Model {
 
     public Cuota() {}

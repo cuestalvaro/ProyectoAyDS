@@ -3,24 +3,25 @@ import java.util.List;
 import org.javalite.activejdbc.*;
 import javax.swing.JOptionPane;
 import RioCuartoViaja.*;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
- * @author alvaro
+ * clase para agregar un nuevo cliente a la base de datos 
+ * @author Álvaro Cuesta
+ * 
  */
 public class AltaViaje extends javax.swing.JFrame {
 
     /**
-     * Creates new form AltaViaje
+     * Constructor AltaViaje
      */
     public AltaViaje() {
         initComponents();
     }
 
+    /**
+     * Metodo que dice si un dni existe
+     * @param dni del cliente
+     * @return true si el dni pertenece algun cliente false lo contrario
+     */
     public boolean buscarDni (String dni){
         Base.open();
         boolean a = false;
@@ -36,52 +37,110 @@ public class AltaViaje extends javax.swing.JFrame {
         return a;
     }
 
-    public void altaClienteSinDatos(){
+    /**
+     * Metodo para cargar los datos de los clientes a la base de datos.
+     */
+    public void altaCliente(){
         Base.open();
         cargarDatosPersonales();
         cargarFichaMedica();
-  //      cargarPaquete();
-  //      cargarTablaClientePaquete();
-  //      cargarFormaPago();
+        cargarClientePaquete();
+        cargarAtraccionPaquete();
+        cargarFormaPago();
         Base.close();
     }
-    public void altaClienteConDatos(){
-    
-    }
+
+    /**
+     * Metodo para cargar los datos personales del clientes
+    */
     public void cargarDatosPersonales(){
+        //datos insertados por el empleado
         int dni = Integer.parseInt(jTextField1.getText());
         String nombre = new String (jTextField2.getText());
         String apellido = new String (jTextField3.getText());
         String direccion = new String (jTextField5.getText());
         String telefono = new String (jTextField4.getText());
-        String nombre_agrupacion = new String (jTextField11.getText());
+        String nombre_agrupacion = new String (jComboBox5.getSelectedItem().toString());
+        //inserto en la base
         Cliente nuevoCliente = new Cliente(dni,nombre,apellido,direccion,telefono,nombre_agrupacion);
-        nuevoCliente.saveIt();
+        nuevoCliente.insert();
     }
+
+    /**
+     * Metodo para cargar la ficha medica ala base de datos
+     */
     public void cargarFichaMedica(){
+        //datos insertados por el empelado
         int dni = Integer.parseInt(jTextField1.getText());
         String nombre_enfermedad = new String (jTextField6.getText());
         String es_cronica = new String (jTextField7.getText());
         String nombre_medicamento = new String (jTextField8.getText());
         String frecuencia = new String (jTextField9.getText());
         String medicamento_alergico = new String (jTextField10.getText());
+        //inserto en la base
         FichaMedica nuevaFicha = new FichaMedica(dni, nombre_enfermedad, es_cronica, nombre_medicamento, frecuencia, medicamento_alergico);
-        nuevaFicha.saveIt();
+        nuevaFicha.insert();
     }
-/*
-    public void cargarTablaClientePaquete(){
 
-        int dni = Integer.parseInt(jTextField1.getText());
-        
+    /**
+     * Metodo para cargar el paquete elegido por el cliente (destino)
+     */
+    public void cargarClientePaquete(){
+        int dni = Integer.parseInt(jTextField1.getText());  
         String destino = jComboBox1.getSelectedItem().toString();
         PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
-        int id_paquete = dest.getId();
-        
-        String id_atraccion = new String (jTextField3.getText());
-        ClientePaquete nuevoClientePaquete = new ClientePaquete(null, dni, id_paquete, id_atraccion);
+        int id_paquete = Integer.parseInt(dest.getId());
+        //inserto en la base
+        ClientePaquete nuevoClientePaquete = new ClientePaquete(dni, id_paquete);
         nuevoClientePaquete.saveIt();
     }
 
+    /**
+     * Metodo que para cargar las atraccioens elegidas por el cliente
+     */
+    public void cargarAtraccionPaquete(){
+        //
+        String dni = new String (jTextField1.getText()); 
+        String destino = jComboBox1.getSelectedItem().toString();
+        PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
+        String id_paquete = dest.getId();
+        int id_cliente_paquete = 0;
+        List<ClientePaquete> clientePaq = ClientePaquete.findAll();
+		if(!clientePaq.isEmpty()){
+            for(ClientePaquete i : clientePaq){
+                if (i.getDni().equals(dni) && i.getIdPaquete().equals(id_paquete)){
+                    id_cliente_paquete =  Integer.parseInt(i.getId());
+                }
+			}
+        }
+        int id_atraccion1=0;
+        int id_atraccion2=0;
+        int id_atraccion3=0;
+        String nom_atrac1 = jComboBox2.getSelectedItem().toString();
+        String nom_atrac2 = jComboBox3.getSelectedItem().toString();
+        String nom_atrac3 = jComboBox4.getSelectedItem().toString();
+        List<AtraccionTuristica> atraCli1 = AtraccionTuristica.findAll();
+		if(!atraCli1.isEmpty()){
+            for(AtraccionTuristica i : atraCli1){
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac1))
+                    id_atraccion1 =  Integer.parseInt(i.getId());
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac2))
+                    id_atraccion2 =  Integer.parseInt(i.getId());
+                if (i.getIdPaquete().equals(id_paquete) && i.getNombre().equals(nom_atrac3))
+                    id_atraccion3 =  Integer.parseInt(i.getId());
+			}
+        }
+        AtraccionCliente nuevaAtraccionCliente1 = new AtraccionCliente (id_cliente_paquete,id_atraccion1);
+        nuevaAtraccionCliente1.saveIt();
+        AtraccionCliente nuevaAtraccionCliente2 = new AtraccionCliente (id_cliente_paquete,id_atraccion2);
+        nuevaAtraccionCliente2.saveIt();
+        AtraccionCliente nuevaAtraccionCliente3 = new AtraccionCliente (id_cliente_paquete,id_atraccion3);
+        nuevaAtraccionCliente3.saveIt();
+    }
+    /**
+     * Metodo para saber que forma de pago eligio y llamar
+     * al metodo que corresponda 
+    */
     public void cargarFormaPago(){
         if (botonEfectivo.isSelected())
             cargarEfectivo();
@@ -89,19 +148,74 @@ public class AltaViaje extends javax.swing.JFrame {
             cargarCuotas();
     }
 
+    /**
+     * Metodo que cargar los datos de la forma de pago en efectivo
+     */
     public void cargarEfectivo(){
+        String dni = new String (jTextField1.getText());
+        String destino = jComboBox1.getSelectedItem().toString();
+        PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
+        int id_paquete = Integer.parseInt(dest.getId());
+        int id_paquete_cliente = 0;
+        List<ClientePaquete> clientePaq = ClientePaquete.findAll();
+		if(!clientePaq.isEmpty()){
+            for(ClientePaquete i : clientePaq){
+                if (i.getDni().equals(dni) && i.getIdPaquete().equals(Integer.toString(id_paquete))){
+                    id_paquete_cliente =  Integer.parseInt(i.getId());
+                }
+			}
+        }
         float monto_total_descuento = Float.parseFloat(jTextField14.getText());
         String fecha = new String (jTextField13.getText());
-        Efectivo nuevoEfectivo = new Efectivo(id_pago, monto_total_descuento, fecha);
+        Efectivo nuevoEfectivo = new Efectivo(id_paquete_cliente, monto_total_descuento, fecha);
         nuevoEfectivo.saveIt();
     }
 
+    /**
+     * Metodo que carga los datos de la forma de pago en cuotas 
+     */
     public void cargarCuotas(){
         
+        String dni = new String (jTextField1.getText());
+        String destino = jComboBox1.getSelectedItem().toString();
+        PaqueteTuristico dest = PaqueteTuristico.findFirst("ciudad_destino = ?",destino); 
+        int id_paquete = Integer.parseInt(dest.getId());
+        int id_paquete_cliente = 0;
+        List<ClientePaquete> clientePaq = ClientePaquete.findAll();
+		if(!clientePaq.isEmpty()){
+            for(ClientePaquete i : clientePaq){
+                if (i.getDni().equals(dni) && i.getIdPaquete().equals(Integer.toString(id_paquete))){
+                    id_paquete_cliente =  Integer.parseInt(i.getId());
+                }
+			}
+        }
+        int cant_cuotas = Integer.parseInt(jTextField12.getText());
+        String fecha_inc = new String (jTextField13.getText());
+        String fecha_fin = new String (jTextField11.getText());
+        PlanCuota nuevoPlanCuota = new PlanCuota(id_paquete_cliente, cant_cuotas, fecha_inc, fecha_fin);
+        nuevoPlanCuota.saveIt();
+        
+        int nro_plan = 0;
+        List<PlanCuota> plan = PlanCuota.findAll();
+		if(!plan.isEmpty()){
+            for(PlanCuota i : plan){
+                if (i.getIdPaquete().equals(Integer.toString(id_paquete_cliente))){
+                    nro_plan =  Integer.parseInt(i.getNroPlan());
+                }
+			}
+        }
+        float monto = Float.parseFloat(jTextField14.getText());
+        Cuota cuota = new Cuota(nro_plan, monto, fecha_inc, "paga");
+        cuota.saveIt();
+
     }
-*/
+
+    /**
+     * Metodo para llenar el combobox con las opciones de destino.
+     */
     public void agregarItemComboBoxDestino(){
         Base.open();
+        jComboBox1.addItem("");
         List<PaqueteTuristico> paquete = PaqueteTuristico.findAll();
 		if(!paquete.isEmpty()){
             for(PaqueteTuristico i : paquete){
@@ -111,6 +225,24 @@ public class AltaViaje extends javax.swing.JFrame {
         Base.close();
     }
 
+    /**
+     * Metodo para agregar las agrupaciones de jubilados al combobox
+     */
+    public void agregarItemComboBoxAgrupacion(){
+        Base.open();
+        jComboBox5.addItem("");
+        List<AgrupacionJubilado> agrupacion = AgrupacionJubilado.findAll();
+		if(!agrupacion.isEmpty()){
+            for(AgrupacionJubilado i : agrupacion){
+                jComboBox5.addItem(i.getNombre());
+			}
+        }
+        Base.close();
+    }
+    
+    /**
+     * Metodo para agregar las atracciones de cada destino al combobox
+     */
     public void agregarItemComboBoxAtraccion(){    
         Base.open();
         String destino = jComboBox1.getSelectedItem().toString();
@@ -128,9 +260,6 @@ public class AltaViaje extends javax.swing.JFrame {
         jComboBox2.removeAllItems();
         jComboBox3.removeAllItems();
         jComboBox4.removeAllItems();
-        jComboBox2.addItem("");
-        jComboBox3.addItem("");
-        jComboBox4.addItem("");
         List<AtraccionTuristica> atraccion = AtraccionTuristica.findAll();
         if(!atraccion.isEmpty()){
             for(AtraccionTuristica i : atraccion){
@@ -143,11 +272,30 @@ public class AltaViaje extends javax.swing.JFrame {
         }
         Base.close();
     }
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     /**
+     * Metodo para limpiar los textos
      */
+    public void limpiarText(){
+        jTextField1.setText("");
+        jTextField2.setText(""); 
+        jTextField3.setText(""); 
+        jTextField4.setText(""); 
+        jTextField5.setText(""); 
+        jTextField6.setText(""); 
+        jTextField7.setText(""); 
+        jTextField8.setText("");
+        jTextField9.setText(""); 
+        jTextField10.setText(""); 
+        jTextField11.setText(""); 
+        jTextField12.setText(""); 
+        jTextField13.setText(""); 
+        jTextField14.setText(""); 
+    }
+
+    //-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -168,7 +316,7 @@ public class AltaViaje extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        jComboBox5 = new javax.swing.JComboBox();
         jPanel6 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -205,6 +353,8 @@ public class AltaViaje extends javax.swing.JFrame {
         jLabel29 = new javax.swing.JLabel();
         botonEfectivo = new javax.swing.JRadioButton();
         botonCuotas = new javax.swing.JRadioButton();
+        jLabel26 = new javax.swing.JLabel();
+        jTextField11 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -248,21 +398,9 @@ public class AltaViaje extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(1, 1, 1));
         jLabel5.setText("Nombre");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         jLabel6.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(20, 2, 2));
         jLabel6.setText("Apellido");
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
 
         jLabel7.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(1, 1, 1));
@@ -299,13 +437,13 @@ public class AltaViaje extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel16)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel6)
                                             .addComponent(jLabel7)
                                             .addComponent(jLabel5))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,7 +453,7 @@ public class AltaViaje extends javax.swing.JFrame {
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jTextField4)
                                             .addComponent(jTextField5))))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,8 +482,8 @@ public class AltaViaje extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel6.setBackground(new java.awt.Color(76, 76, 76));
@@ -359,13 +497,7 @@ public class AltaViaje extends javax.swing.JFrame {
         jLabel11.setText("Enfermedad");
 
         jLabel12.setForeground(new java.awt.Color(1, 1, 1));
-        jLabel12.setText("¿ Es cronica ?");
-
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
+        jLabel12.setText("¿ Es cronica ? (si/no)");
 
         jLabel13.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(1, 1, 1));
@@ -390,50 +522,50 @@ public class AltaViaje extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel13))
+                        .addGap(56, 56, 56)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel15))
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel11))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel12)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
+                    .addComponent(jLabel13)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addContainerGap(37, Short.MAX_VALUE))
+                    .addComponent(jLabel15)
+                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25))
         );
 
         jPanel5.setBackground(new java.awt.Color(76, 76, 76));
@@ -446,21 +578,9 @@ public class AltaViaje extends javax.swing.JFrame {
         jLabel18.setForeground(new java.awt.Color(1, 1, 1));
         jLabel18.setText("Ciudad de destino");
 
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
         jLabel19.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(1, 1, 1));
         jLabel19.setText("Atracción túristica 2");
-
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
 
         jLabel21.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(1, 1, 1));
@@ -469,18 +589,6 @@ public class AltaViaje extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(1, 1, 1));
         jLabel20.setText("Atracción túristica 3");
-
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
-
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
-            }
-        });
 
         jButton3.setBackground(new java.awt.Color(29, 134, 21));
         jButton3.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
@@ -559,12 +667,6 @@ public class AltaViaje extends javax.swing.JFrame {
         jLabel24.setForeground(new java.awt.Color(1, 1, 1));
         jLabel24.setText("Fecha(****-**-**)");
 
-        jTextField13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField13ActionPerformed(evt);
-            }
-        });
-
         jLabel25.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(1, 1, 1));
         jLabel25.setText("(Si la forma de pago es en cuotas)");
@@ -585,30 +687,20 @@ public class AltaViaje extends javax.swing.JFrame {
         botonEfectivo.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         botonEfectivo.setForeground(new java.awt.Color(1, 1, 1));
         botonEfectivo.setText("Efectivo");
-        botonEfectivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonEfectivoActionPerformed(evt);
-            }
-        });
 
         botonCuotas.setBackground(new java.awt.Color(76, 76, 76));
         botonCuotas.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
         botonCuotas.setForeground(new java.awt.Color(1, 1, 1));
         botonCuotas.setText("Cuotas");
-        botonCuotas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCuotasActionPerformed(evt);
-            }
-        });
+
+        jLabel26.setFont(new java.awt.Font("Ubuntu Mono", 0, 18)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(1, 1, 1));
+        jLabel26.setText("Fecha Finalizacion: ");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jLabel22)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
@@ -623,17 +715,27 @@ public class AltaViaje extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel28))
                             .addComponent(jLabel23)))
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel25))
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addGap(63, 63, 63)
+                            .addComponent(jLabel29)
+                            .addGap(43, 43, 43)
+                            .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel25))
+                                .addComponent(jLabel22)
+                                .addGap(12, 12, 12))
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addComponent(jLabel29)
-                                .addGap(43, 43, 43)
-                                .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel26)
+                                .addGap(78, 78, 78)))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                            .addComponent(jTextField11)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(botonEfectivo)
@@ -661,9 +763,13 @@ public class AltaViaje extends javax.swing.JFrame {
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel25)
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(4, 4, 4)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel26)
+                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
                     .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -688,10 +794,10 @@ public class AltaViaje extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -782,85 +888,45 @@ public class AltaViaje extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
         agregarItemComboBoxDestino();
         agregarItemComboBoxAtraccion();
+        agregarItemComboBoxAgrupacion();
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         if (jTextField1.getText().equals("") || jTextField2.getText().equals("") || jTextField3.getText().equals("") ||
         jTextField4.getText().equals("") || jTextField5.getText().equals("") || jTextField6.getText().equals("") || jTextField7.getText().equals("") ||
-        jTextField8.getText().equals("") || jTextField9.getText().equals("") || jTextField10.getText().equals("") || jTextField11.getText().equals(""))
+        jTextField8.getText().equals("") || jTextField9.getText().equals("") || jTextField10.getText().equals("") || ( botonCuotas.isSelected() && jTextField11.getText().equals("") )
+        || ( !botonCuotas.isSelected() && !botonEfectivo.isSelected()) || ( botonCuotas.isSelected() && jTextField12.getText().equals("") ) )
             JOptionPane.showMessageDialog(null, "Asegurese de llenar todos los campos");
         else{
             String dni = new String (jTextField1.getText());
             if (buscarDni(dni))
-                altaClienteConDatos();
+                JOptionPane.showMessageDialog(null, "DNI existente");
             else
-                altaClienteSinDatos();
+                altaCliente();
+                JOptionPane.showMessageDialog(null, "Cliente Agregado");
+                limpiarText();
         }  
     }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         Inicio inc = new Inicio();
         inc.jLabel5.setText(this.nombreAdmin);
         inc.setVisible(true);
         this.setVisible(false);
     }
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
-
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox4ActionPerformed
-
-    private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField13ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         agregarItemComboBoxAtraccion();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void botonEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEfectivoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonEfectivoActionPerformed
-
-    private void botonCuotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCuotasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonCuotasActionPerformed
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -897,6 +963,7 @@ public class AltaViaje extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
+    private javax.swing.JComboBox jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -915,6 +982,7 @@ public class AltaViaje extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
@@ -947,5 +1015,4 @@ public class AltaViaje extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     protected String nombreAdmin;
-    // End of variables declaration//GEN-END:variables
 }
